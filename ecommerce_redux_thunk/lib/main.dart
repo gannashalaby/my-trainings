@@ -120,3 +120,5 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+//Refrences:
+// 1. https://www.geeksforgeeks.org/what-is-the-use-of-middleware-redux-thunk/ (until Steps to Setup of Redux with Thunk)
