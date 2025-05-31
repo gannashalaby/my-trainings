@@ -36,7 +36,22 @@ class _SplashScreenState extends State<SplashScreen>
     return Scaffold(
       backgroundColor: CustomColors.bodyColor,
       body: Center(
-        child: SplashAnim(animation: _splashAnimController.animation),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Welcoe to E-Commerce Thunk',
+              style: TextStyle(fontSize: 24),
+            ),
+            SizedBox(height: 30), // Adds space between text and animation
+            Container(
+              height: 160, // Max animation size
+              width: 160,
+              alignment: Alignment.center,
+              child: SplashAnim(animation: _splashAnimController.animation),
+            ),
+          ],
+        ),
       ),
     );
   }
