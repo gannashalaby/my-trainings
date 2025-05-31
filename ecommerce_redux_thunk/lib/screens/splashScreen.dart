@@ -34,17 +34,10 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: CustomColors.backgroundColor,
+      backgroundColor: CustomColors.bodyColor,
       body: Center(
-        // child: ClipOval(
-          child: Material(
-            color: CustomColors.bodyColor,
-            // elevation: 0,
-            // borderRadius: BorderRadius.circular(500),
-            child: SplashAnim(animation: _splashAnimController.animation),
-          ),
-        ),
-      // ),
+        child: SplashAnim(animation: _splashAnimController.animation),
+      ),
     );
   }
 }

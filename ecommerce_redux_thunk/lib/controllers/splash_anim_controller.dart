@@ -7,7 +7,7 @@ class SplashAnimationController {
   SplashAnimationController({required TickerProvider vsync}) {
     controller = AnimationController(
       vsync: vsync,
-      duration: Duration(milliseconds: 500),
+      duration: Duration(milliseconds: 800),
     );
 
     animation = Tween(begin: 140.0, end: 160.0).animate(

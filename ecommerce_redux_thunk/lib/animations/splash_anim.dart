@@ -7,18 +7,21 @@ class SplashAnim extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaleTransition(
-      scale: animation,
-      child: ClipOval(
-        // borderRadius: BorderRadius.circular(500),
-        child: SizedBox(
-          width: 400,
-          height: 400,
-          child: Image.asset(
-            'assets/images/splash_screen_image.jpg',
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, child) {
+        return Container(
+          height: animation.value,
+          width: animation.value,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            image: DecorationImage(
+              image: AssetImage('assets/images/splash_screen_image.jpg'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
