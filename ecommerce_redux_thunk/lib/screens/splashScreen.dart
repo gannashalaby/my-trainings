@@ -1,9 +1,11 @@
+import 'package:ecommerce_redux_thunk/paths/imagePaths.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_redux_thunk/screens/loginScreen.dart';
 import 'package:ecommerce_redux_thunk/constans/colors.dart';
 import 'package:ecommerce_redux_thunk/controllers/splash_anim_controller.dart';
 import 'package:ecommerce_redux_thunk/animations/splash_anim.dart';
-// import 'package:lottie/lottie.dart';
+import 'package:ecommerce_redux_thunk/constans/texts.dart';
+// import 'package:ecommerce_redux_thunk/paths/imagePaths.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String id = '/';
@@ -17,10 +19,18 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   late SplashAnimationController _splashAnimController;
+  final path = imagePaths[0];
 
   @override
   void initState() {
     super.initState();
+
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   precacheImage(
+    //     AssetImage(path),
+    //     context,
+    //   );
+    // });
 
     _splashAnimController = SplashAnimationController(vsync: this);
     _splashAnimController.controller.forward();
@@ -39,13 +49,16 @@ class _SplashScreenState extends State<SplashScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Welcoe to E-Commerce Thunk',
-              style: TextStyle(fontSize: 24),
+            Center(
+              child: Text(
+                'Welcome to E-Commerce Thunk',
+                style: CustomTextStyles.heading,
+                textAlign: TextAlign.center,
+              ),
             ),
-            SizedBox(height: 30), // Adds space between text and animation
+            SizedBox(height: 30),
             Container(
-              height: 160, // Max animation size
+              height: 160,
               width: 160,
               alignment: Alignment.center,
               child: SplashAnim(animation: _splashAnimController.animation),

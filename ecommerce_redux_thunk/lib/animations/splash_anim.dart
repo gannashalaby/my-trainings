@@ -1,9 +1,11 @@
+import 'package:ecommerce_redux_thunk/paths/imagePaths.dart';
 import 'package:flutter/material.dart';
 
 class SplashAnim extends StatelessWidget {
   final Animation<double> animation;
+  final path = imagePaths[0];
 
-  const SplashAnim({super.key, required this.animation});
+  SplashAnim({super.key, required this.animation});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class SplashAnim extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
-              image: AssetImage('assets/images/splash_screen_image.jpg'),
+              image: AssetImage((path)),
               fit: BoxFit.cover,
             ),
           ),
