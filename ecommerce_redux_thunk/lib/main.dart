@@ -43,3 +43,4 @@ class EcommerceThunk extends StatelessWidget {
 // 1. https://www.geeksforgeeks.org/what-is-the-use-of-middleware-redux-thunk/ (until Steps to Setup of Redux with Thunk)
 // 2. https://github.com/rashidwassan/flutter-ecommerce-app-ui/tree/main
 // 3. https://www.geeksforgeeks.org/flutter-working-with-animations/
+// 4. https://stackoverflow.com/questions/76621965/how-to-store-restore-and-add-to-json-file-sqlite-database-or-text-file
