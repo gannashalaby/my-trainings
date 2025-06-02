@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ecommerce_redux_thunk/screens/splashScreen.dart';
-import 'package:ecommerce_redux_thunk/screens/loginScreen.dart';
+import 'package:ecommerce_redux_thunk/screens/splash_screen.dart';
+import 'package:ecommerce_redux_thunk/screens/login_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

@@ -1,4 +1,4 @@
-import 'package:ecommerce_redux_thunk/paths/imagePaths.dart';
+import 'package:ecommerce_redux_thunk/paths/image_paths.dart';
 import 'package:flutter/material.dart';
 
 class SplashAnim extends StatelessWidget {
