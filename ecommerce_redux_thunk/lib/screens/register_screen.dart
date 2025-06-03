@@ -1,3 +1,6 @@
+import 'package:ecommerce_redux_thunk/constans/colors.dart';
+import 'package:ecommerce_redux_thunk/screens/home_screen.dart';
+import 'package:ecommerce_redux_thunk/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_redux_thunk/services/user_service.dart';
 import 'package:ecommerce_redux_thunk/models/user_model.dart';
@@ -31,13 +34,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final users = await _userService.getAllUsers();
 
     final usernameExists = users.userList.any((user) => user.name == name);
-      if (usernameExists) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Username already exists!')),
-        );
-        return;
+    if (usernameExists) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Username already exists!')),
+      );
+      return;
     }
-  
+
     final int newId = users.userList.isEmpty
         ? 1
         : users.userList.map((u) => u.id).reduce((a, b) => a > b ? a : b) + 1;
@@ -49,46 +52,94 @@ class _RegisterScreenState extends State<RegisterScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('User registered succesfully!')),
     );
-
-    // Optionally clear fields
     _usernameController.clear();
     _passwordController.clear();
+
+    Navigator.pushNamed(context, HomeScreen.id);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register'),
+        title: const Text(
+          'Sign Up',
+          style: TextStyle(color: CustomColors.backgroundColor),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child: Center(
+          child: Column(
+            children: [
+              TextField(
+                controller: _usernameController,
+                style: TextStyle(color: CustomColors.backgroundColor),
+                decoration: const InputDecoration(
+                  labelText: 'Username',
+                  labelStyle: CustomTextStyles.buttonText,
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: CustomColors.backgroundColor),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: CustomColors.backgroundColor),
+                  ),
+                ),
+              ),
+              TextField(
+                controller: _passwordController,
+                style: TextStyle(color: CustomColors.backgroundColor),
+                decoration: const InputDecoration(
+                  labelText: 'Password',
+                  labelStyle: CustomTextStyles.buttonText,
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: CustomColors.backgroundColor),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: CustomColors.backgroundColor),
+                  ),
+                ),
+                obscureText: true,
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: _registerUser,
+                child: const Text(
+                  'Register',
+                  style: CustomTextStyles.buttonText,
+                )
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Already have an account?',
+                style: CustomTextStyles.caption,
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, LoginScreen.id);
+                },
+                child: const Text(
+                  'Login',
+                  style: CustomTextStyles.buttonText,
+                )
+              ),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              controller: _usernameController,
-              decoration: const InputDecoration(labelText: 'Username'),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _registerUser,
-              child: const Text(
-                'Register',
-                style: CustomTextStyles.buttonText,
-              )
-            ),
             ElevatedButton(
               onPressed: () async {
                 await _userService.printJsonContent();
               },
               child: const Text(
                 'Print Users',
-                style: CustomTextStyles.buttonText,
+                style: CustomTextStyles.smallButtonText,
               ),
             ),
             ElevatedButton(
@@ -100,7 +151,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               },
               child: const Text(
                 'Clear Users',
-                style: CustomTextStyles.buttonText,
+                style: CustomTextStyles.smallButtonText,
               ),
             ),
             ElevatedButton(
@@ -109,7 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               },
               child: const Text(
                 'Print Users Path',
-                style: CustomTextStyles.buttonText,
+                style: CustomTextStyles.smallButtonText,
               ),
             ),
           ],

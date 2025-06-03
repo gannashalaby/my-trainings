@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen>
     Future.delayed(const Duration(seconds: 5), () {
       if (!mounted) return;
       _splashAnimController.dispose();
-      Navigator.of(context).pushReplacementNamed(RegisterScreen.id);
+      Navigator.of(context).pushReplacementNamed(LoginScreen.id);
     });
   }
 

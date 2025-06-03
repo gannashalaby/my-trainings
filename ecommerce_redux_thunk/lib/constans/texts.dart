@@ -5,7 +5,7 @@ class CustomTextStyles {
   static const TextStyle heading = TextStyle(
     fontSize: 28,
     fontWeight: FontWeight.bold,
-    color: CustomColors.textColor,
+    color: CustomColors.backgroundColor,
   );
 
   static const TextStyle subheading = TextStyle(
@@ -28,6 +28,12 @@ class CustomTextStyles {
   static const TextStyle buttonText = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w600,
+    color: CustomColors.backgroundColor,
+  );
+
+  static const TextStyle smallButtonText = TextStyle(
+    fontSize: 12,
+    // fontWeight: FontWeight.w600,
     color: CustomColors.backgroundColor,
   );
 }
