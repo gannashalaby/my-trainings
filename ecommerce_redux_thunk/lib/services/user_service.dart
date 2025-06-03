@@ -12,6 +12,23 @@ class UserService {
     return '${directory.path}/$_fileName';
   }
 
+  Future<void> getJsonFilePath() async {
+    final path = await _getFilePath();
+    final file = File(path);
+    print('📂 users.json file path: $path');
+  }
+
+  Future<void> printJsonContent() async {
+    final file = await _getFile();
+    final content = await file.readAsString();
+    print('🔍 users.json content:\n$content');
+  }
+
+  Future<void> clearAllUsers() async {
+    final file = await _getFile();
+    await file.writeAsString(jsonEncode({'user': []}));
+  }
+
   Future<File> _getFile() async {
     final path = await _getFilePath();
     final file = File(path);

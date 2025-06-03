@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_redux_thunk/services/user_service.dart';
 import 'package:ecommerce_redux_thunk/models/user_model.dart';
 import 'package:ecommerce_redux_thunk/constans/texts.dart';
-import 'package:id_gen/id_gen_helpers.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String id = '/register';
@@ -19,8 +18,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final UserService _userService = UserService();
 
   Future<void> _registerUser() async {
-    final name = _usernameController.text.trim();
-    final password = _passwordController.text.trim();
+    final String name = _usernameController.text.trim();
+    final String password = _passwordController.text.trim();
 
     if (name.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -29,18 +28,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
-    // Get current users to generate next ID
     final users = await _userService.getAllUsers();
-    final newId = users.userList.isNotEmpty
-        ? users.userList.last.id + 1
-        : 1;
+
+    final usernameExists = users.userList.any((user) => user.name == name);
+      if (usernameExists) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Username already exists!')),
+        );
+        return;
+    }
+  
+    final int newId = users.userList.isEmpty
+        ? 1
+        : users.userList.map((u) => u.id).reduce((a, b) => a > b ? a : b) + 1;
 
     final newUser = User(id: newId, name: name, password: password);
 
     await _userService.addUser(newUser);
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('User registered successfully!')),
+      SnackBar(content: Text('User registered succesfully!')),
     );
 
     // Optionally clear fields
@@ -74,6 +81,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 'Register',
                 style: CustomTextStyles.buttonText,
               )
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await _userService.printJsonContent();
+              },
+              child: const Text(
+                'Print Users',
+                style: CustomTextStyles.buttonText,
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await _userService.clearAllUsers();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('All users deleted.')),
+                );
+              },
+              child: const Text(
+                'Clear Users',
+                style: CustomTextStyles.buttonText,
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await _userService.getJsonFilePath();
+              },
+              child: const Text(
+                'Print Users Path',
+                style: CustomTextStyles.buttonText,
+              ),
             ),
           ],
         ),
