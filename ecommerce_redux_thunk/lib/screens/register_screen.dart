@@ -62,10 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Sign Up',
-          style: TextStyle(color: CustomColors.backgroundColor),
-        ),
+        title: const Text('Sign Up Screen'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -105,7 +102,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ElevatedButton(
                 onPressed: _registerUser,
                 child: const Text(
-                  'Register',
+                  'Signup',
                   style: CustomTextStyles.buttonText,
                 )
               ),

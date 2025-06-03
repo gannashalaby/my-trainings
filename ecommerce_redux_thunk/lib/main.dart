@@ -1,4 +1,5 @@
 import 'package:ecommerce_redux_thunk/constans/colors.dart';
+import 'package:ecommerce_redux_thunk/constans/texts.dart';
 import 'package:ecommerce_redux_thunk/route_generator.dart';
 import 'package:ecommerce_redux_thunk/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,11 @@ class EcommerceThunk extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'E-Commerce Thunk',
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          iconTheme: IconThemeData(color: CustomColors.bodyColor),
+          backgroundColor: CustomColors.backgroundColor,
+          titleTextStyle: CustomTextStyles.appBar,
+        ),
         colorScheme: ColorScheme(
           primary: CustomColors.bodyColor,//
           primaryContainer: CustomColors.backgroundColor,

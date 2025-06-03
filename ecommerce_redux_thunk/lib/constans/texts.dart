@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce_redux_thunk/constans/colors.dart';
 
 class CustomTextStyles {
+  static const TextStyle appBar = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    color: CustomColors.bodyColor,
+  );
   static const TextStyle heading = TextStyle(
     fontSize: 28,
     fontWeight: FontWeight.bold,
