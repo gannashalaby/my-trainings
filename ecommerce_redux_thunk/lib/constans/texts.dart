@@ -41,4 +41,10 @@ class CustomTextStyles {
     // fontWeight: FontWeight.w600,
     color: CustomColors.backgroundColor,
   );
+
+  static const TextStyle errorTextStyle = TextStyle(
+    fontSize: 14,
+    color: CustomColors.errorColor,
+    fontWeight: FontWeight.bold,
+  );
 }

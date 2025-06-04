@@ -1,4 +1,3 @@
-import 'package:ecommerce_redux_thunk/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_redux_thunk/screens/login_screen.dart';
 import 'package:ecommerce_redux_thunk/constans/colors.dart';

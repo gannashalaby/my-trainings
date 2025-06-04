@@ -14,7 +14,6 @@ class UserService {
 
   Future<void> getJsonFilePath() async {
     final path = await _getFilePath();
-    final file = File(path);
     print('📂 users.json file path: $path');
   }
 

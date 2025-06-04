@@ -1,46 +1,60 @@
+import 'package:flutter/material.dart';
 import 'package:ecommerce_redux_thunk/constans/colors.dart';
 import 'package:ecommerce_redux_thunk/constans/texts.dart';
 import 'package:ecommerce_redux_thunk/route_generator.dart';
 import 'package:ecommerce_redux_thunk/screens/splash_screen.dart';
-import 'package:flutter/material.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
+import 'package:ecommerce_redux_thunk/redux/states/user_state.dart';
+import 'package:ecommerce_redux_thunk/redux/reducers/user_reducer.dart';
 
 void main() {
-  runApp(const EcommerceThunk());
+  final store = Store<UserState>(
+    userReducer,
+    initialState: UserState.initial(),
+    middleware: [thunkMiddleware],
+  );
+  runApp(EcommerceThunk(store: store));
 }
 
 class EcommerceThunk extends StatelessWidget {
-  const EcommerceThunk({super.key});
+  final Store<UserState> store;
+  const EcommerceThunk({super.key, required this.store});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'E-Commerce Thunk',
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          iconTheme: IconThemeData(color: CustomColors.bodyColor),
-          backgroundColor: CustomColors.backgroundColor,
-          titleTextStyle: CustomTextStyles.appBar,
+    return StoreProvider(
+      store: store,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'E-Commerce Thunk',
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            iconTheme: IconThemeData(color: CustomColors.bodyColor),
+            backgroundColor: CustomColors.backgroundColor,
+            titleTextStyle: CustomTextStyles.appBar,
+          ),
+          colorScheme: ColorScheme(
+            primary: CustomColors.bodyColor,//
+            primaryContainer: CustomColors.backgroundColor,
+            secondary: CustomColors.successColor,//
+            // secondaryContainer: CustomColors.successColor,
+            // background: CustomColors.bodyColor,
+            surface: CustomColors.bodyColor,
+            error: CustomColors.errorColor,//
+            onPrimary: CustomColors.textColor,
+            onSecondary: Colors.black,//
+            // onBackground: CustomColors.textColor,
+            onSurface: CustomColors.textColor,
+            onError: Colors.white,//
+            brightness: Brightness.light,
+          ),
         ),
-        colorScheme: ColorScheme(
-          primary: CustomColors.bodyColor,//
-          primaryContainer: CustomColors.backgroundColor,
-          secondary: CustomColors.successColor,//
-          // secondaryContainer: CustomColors.successColor,
-          // background: CustomColors.bodyColor,
-          surface: CustomColors.bodyColor,
-          error: CustomColors.errorColor,//
-          onPrimary: CustomColors.textColor,
-          onSecondary: Colors.black,//
-          // onBackground: CustomColors.textColor,
-          onSurface: CustomColors.textColor,
-          onError: Colors.white,//
-          brightness: Brightness.light,
-        ),
+        initialRoute: SplashScreen.id,
+        onGenerateRoute: RouteGenerator.generateRoute,
       ),
-      initialRoute: SplashScreen.id,
-      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }

@@ -8,12 +8,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 import 'package:ecommerce_redux_thunk/main.dart';
+import 'package:ecommerce_redux_thunk/redux/states/user_state.dart';
+import 'package:ecommerce_redux_thunk/redux/reducers/user_reducer.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const EcommerceThunk());
+ testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    // Create the store
+    final store = Store<UserState>(
+      userReducer,
+      initialState: UserState.initial(),
+      middleware: [thunkMiddleware],
+    );
+
+    // Pass the store to EcommerceThunk
+    await tester.pumpWidget(EcommerceThunk(store: store));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

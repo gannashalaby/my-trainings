@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 enum Actions { increment }
 
@@ -11,7 +12,11 @@ int counterReducer(int state, dynamic action) {
 }
 
 void main() {
-  final store = Store<int>(counterReducer, initialState: 0);
+  final store = Store<int>(
+    counterReducer, 
+    initialState: 0,
+    middleware: [thunkMiddleware],
+  );
 
   runApp(FlutterReduxApp(title: 'Flutter Redux Demo', store: store));
 }
