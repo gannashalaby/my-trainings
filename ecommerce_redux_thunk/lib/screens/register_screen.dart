@@ -61,12 +61,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Registered successfully!")),
+          const SnackBar(content: Text("Signed up successfully!")),
         );
         _usernameController.clear();
         _passwordController.clear();
 
-        Navigator.pushReplacementNamed(context, HomeScreen.id);
+        Navigator.pushNamed(context, HomeScreen.id);
       }
     } catch (e) {
       setState(() {

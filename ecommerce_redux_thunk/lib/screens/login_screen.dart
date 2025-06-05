@@ -38,10 +38,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final users = await _userService.getAllUsers();
 
-    final bool noUsernameExists = users.userList.any((user) => user.name == name);
+    final bool usernameExists = users.userList.any((user) => user.name == name);
     final wrongPassword = users.userList.any((user) => user.name == name && user.password != password);
     
-    if (!noUsernameExists) {
+    if (!usernameExists) {
       setState(() {
         _isLoading = false;
       });
@@ -70,10 +70,8 @@ class _LoginScreenState extends State<LoginScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Logged in successfully!")),
         );
-        _usernameController.clear();
-        _passwordController.clear();
 
-        Navigator.pushReplacementNamed(context, HomeScreen.id);
+        Navigator.pushNamed(context, HomeScreen.id);
       }
     } catch (e) {
       setState(() {
