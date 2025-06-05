@@ -19,7 +19,7 @@ ThunkAction<UserState> registerUserThunk(String name, String password) {
           : users.userList.map((u) => u.id).reduce((a, b) => a > b ? a : b) + 1;
 
       final user = User(id: newId, name: name, password: password);
-      
+
       await userService.addUser(user);
 
       store.dispatch(RegisterUserSuccess(user));
@@ -29,12 +29,13 @@ ThunkAction<UserState> registerUserThunk(String name, String password) {
   };
 }
 
-ThunkAction<UserState> loginUserThunk(int id, String name, String password) {
+ThunkAction<UserState> loginUserThunk(String name, String password) {
   return (Store<UserState> store) async {
     store.dispatch(LoginUserRequest());
 
     try {
-      // final users = await userService.getAllUsers();
+      final users = await userService.getAllUsers();
+      final id = users.userList.first.id;
 
       final user = User(id: id, name: name, password: password);
 

@@ -27,7 +27,6 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _error;
 
   void _submit(Store<UserState> store) async {
-    final int id = 0;
     final String name = _usernameController.text.trim();
     final String password = _passwordController.text.trim();
     if (!_formKey.currentState!.validate()) return;
@@ -39,19 +38,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final users = await _userService.getAllUsers();
 
-    final noUsernameExists = users.userList.any((user) => user.name != name);
+    final bool noUsernameExists = users.userList.any((user) => user.name == name);
     final wrongPassword = users.userList.any((user) => user.name == name && user.password != password);
-
-    if (wrongPassword) {
-      setState(() {
-        _isLoading = false;
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password is incorrect 😕!')),
-      );
-      return;
-    } else if (noUsernameExists) {
+    
+    if (!noUsernameExists) {
       setState(() {
         _isLoading = false;
       });
@@ -60,17 +50,28 @@ class _LoginScreenState extends State<LoginScreen> {
         context,
       ).showSnackBar(const SnackBar(content: Text('Username does not exist!')));
       return;
+    } else if (wrongPassword) {
+      setState(() {
+        _isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password is incorrect 😕!')),
+      );
+      return;
     }
 
     try {
       await store.dispatch(
-        loginUserThunk(id, _usernameController.text, _passwordController.text),
+        loginUserThunk(_usernameController.text, _passwordController.text),
       );
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Logged in successfully!")),
         );
+        _usernameController.clear();
+        _passwordController.clear();
 
         Navigator.pushReplacementNamed(context, HomeScreen.id);
       }
