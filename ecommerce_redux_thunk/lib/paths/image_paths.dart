@@ -1,6 +1,7 @@
 final List<String> imagePaths = [
   'assets/images/splash_screen_image.jpg',
 ];
+
 final List<String> productImagePaths = [
   'assets/images/product_images/astatin.png',
   'assets/images/product_images/azera.png',
