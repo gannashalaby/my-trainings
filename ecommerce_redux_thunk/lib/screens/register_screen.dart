@@ -7,7 +7,7 @@ import 'package:ecommerce_redux_thunk/constans/texts.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ecommerce_redux_thunk/redux/states/user_state.dart';
-import 'package:ecommerce_redux_thunk/redux/middleware/user_thunk.dart';
+import 'package:ecommerce_redux_thunk/redux/middlewares/user_thunk.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String id = '/register';
