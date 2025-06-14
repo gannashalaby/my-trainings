@@ -3,12 +3,12 @@ import 'package:redux_thunk/redux_thunk.dart';
 import 'package:ecommerce_redux_thunk/models/user_model.dart';
 import 'package:ecommerce_redux_thunk/services/user_service.dart';
 import 'package:ecommerce_redux_thunk/redux/actions/user_action.dart';
-import 'package:ecommerce_redux_thunk/redux/states/user_state.dart';
+import 'package:ecommerce_redux_thunk/redux/states/app_state.dart';
 
 final userService = UserService();
 
-ThunkAction<UserState> registerUserThunk(String name, String password) {
-  return (Store<UserState> store) async {
+ThunkAction<AppState> registerUserThunk(String name, String password) {
+  return (Store<AppState> store) async {
     store.dispatch(RegisterUserRequest());
 
     try {
@@ -29,8 +29,8 @@ ThunkAction<UserState> registerUserThunk(String name, String password) {
   };
 }
 
-ThunkAction<UserState> loginUserThunk(String name, String password) {
-  return (Store<UserState> store) async {
+ThunkAction<AppState> loginUserThunk(String name, String password) {
+  return (Store<AppState> store) async {
     store.dispatch(LoginUserRequest());
 
     try {
@@ -46,20 +46,22 @@ ThunkAction<UserState> loginUserThunk(String name, String password) {
   };
 }
 
-ThunkAction<UserState> printUsersThunk() {
-  return (Store<UserState> store) async {
+ThunkAction<AppState> printUsersThunk() {
+  return (Store<AppState> store) async {
     await userService.printJsonContent();
   };
 }
 
-ThunkAction<UserState> clearUsersThunk() {
-  return (Store<UserState> store) async {
+ThunkAction<AppState> clearUsersThunk() {
+  return (Store<AppState> store) async {
     await userService.clearAllUsers();
   };
 }
 
-ThunkAction<UserState> printUserPathThunk() {
-  return (Store<UserState> store) async {
+ThunkAction<AppState> printUserPathThunk() {
+  return (Store<AppState> store) async {
     await userService.getJsonFilePath();
   };
 }
+
+List<Middleware<AppState>> createUserMiddleware() => [];

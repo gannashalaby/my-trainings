@@ -11,16 +11,22 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:ecommerce_redux_thunk/main.dart';
-import 'package:ecommerce_redux_thunk/redux/states/user_state.dart';
-import 'package:ecommerce_redux_thunk/redux/reducers/user_reducer.dart';
+import 'package:ecommerce_redux_thunk/redux/states/app_state.dart';
+import 'package:ecommerce_redux_thunk/redux/reducers/root_reducer.dart';
+import 'package:ecommerce_redux_thunk/redux/middlewares/user_thunk.dart';
+import 'package:ecommerce_redux_thunk/redux/middlewares/product_thunk.dart';
 
 void main() {
  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Create the store
-    final store = Store<UserState>(
-      userReducer,
-      initialState: UserState.initial(),
-      middleware: [thunkMiddleware],
+    final store = Store<AppState>(
+      rootReducer,
+      initialState: AppState.initial(),
+      middleware: [
+        thunkMiddleware,
+        ...createUserMiddleware(),
+        ...createProductMiddleware(),
+      ],
     );
 
     // Pass the store to EcommerceThunk

@@ -7,20 +7,30 @@ import 'package:ecommerce_redux_thunk/screens/splash_screen.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
-import 'package:ecommerce_redux_thunk/redux/states/user_state.dart';
-import 'package:ecommerce_redux_thunk/redux/reducers/user_reducer.dart';
+import 'package:ecommerce_redux_thunk/redux/states/app_state.dart';
+import 'package:ecommerce_redux_thunk/redux/reducers/root_reducer.dart';
+import 'package:ecommerce_redux_thunk/redux/middlewares/user_thunk.dart';
+import 'package:ecommerce_redux_thunk/redux/middlewares/product_thunk.dart';
+import 'package:ecommerce_redux_thunk/services/product_service.dart';
 
-void main() {
-  final store = Store<UserState>(
-    userReducer,
-    initialState: UserState.initial(),
-    middleware: [thunkMiddleware],
+void main() async{
+  final store = Store<AppState>(
+    rootReducer,
+    initialState: AppState.initial(),
+    middleware: [
+      thunkMiddleware,
+      ...createUserMiddleware(),
+      ...createProductMiddleware(),
+    ],
   );
+  WidgetsFlutterBinding.ensureInitialized();
+  final productService = ProductService();
+  await productService.insertMockProductsIfEmpty();
   runApp(EcommerceThunk(store: store));
 }
 
 class EcommerceThunk extends StatelessWidget {
-  final Store<UserState> store;
+  final Store<AppState> store;
   const EcommerceThunk({super.key, required this.store});
 
   @override

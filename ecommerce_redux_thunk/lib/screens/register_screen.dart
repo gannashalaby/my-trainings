@@ -6,7 +6,7 @@ import 'package:ecommerce_redux_thunk/services/user_service.dart';
 import 'package:ecommerce_redux_thunk/constans/texts.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:ecommerce_redux_thunk/redux/states/user_state.dart';
+import 'package:ecommerce_redux_thunk/redux/states/app_state.dart';
 import 'package:ecommerce_redux_thunk/redux/middlewares/user_thunk.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -26,7 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _isLoading = false;
   String? _error;
 
-  void _submit(Store<UserState> store) async {
+  void _submit(Store<AppState> store) async {
     final String name = _usernameController.text.trim();
     if (!_formKey.currentState!.validate()) return;
 
@@ -83,7 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<UserState, Store<UserState>>(
+    return StoreConnector<AppState, Store<AppState>>(
       converter: (store) => store,
       builder: (context, store) {
         return Scaffold(
@@ -167,7 +167,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
           ),
-          bottomNavigationBar: StoreConnector<UserState, Store<UserState>>(
+          bottomNavigationBar: StoreConnector<AppState, Store<AppState>>(
             converter: (store) => store,
             builder: (context, store) {
               return Container(

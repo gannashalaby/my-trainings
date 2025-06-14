@@ -6,7 +6,7 @@ import 'package:ecommerce_redux_thunk/constans/texts.dart';
 import 'package:ecommerce_redux_thunk/screens/home_screen.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:ecommerce_redux_thunk/redux/states/user_state.dart';
+import 'package:ecommerce_redux_thunk/redux/states/app_state.dart';
 import 'package:ecommerce_redux_thunk/redux/middlewares/user_thunk.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   String? _error;
 
-  void _submit(Store<UserState> store) async {
+  void _submit(Store<AppState> store) async {
     final String name = _usernameController.text.trim();
     final String password = _passwordController.text.trim();
     if (!_formKey.currentState!.validate()) return;
@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<UserState, Store<UserState>>(
+    return StoreConnector<AppState, Store<AppState>>(
       converter: (store) => store,
       builder: (context, store) {
         return Scaffold(
@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          bottomNavigationBar: StoreConnector<UserState, Store<UserState>>(
+          bottomNavigationBar: StoreConnector<AppState, Store<AppState>>(
             converter: (store) => store,
             builder: (context, store) {
               return Container(
