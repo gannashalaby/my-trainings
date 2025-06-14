@@ -11,13 +11,12 @@ ThunkAction<AppState> fetchProductsThunk() {
     store.dispatch(FetchProductRequest());
 
     try {
-      await Future.delayed(const Duration(seconds: 2));
+      // await Future.delayed(const Duration(seconds: 2));
 
       final existingProducts = await productService.getAllProducts();
-
-      if (existingProducts.productModel.isEmpty) {
         final mockProducts = productService.getMockProducts();
 
+      if (existingProducts.productModel != mockProducts) {
         for (var product in mockProducts) {
           await productService.addProduct(product);
         }

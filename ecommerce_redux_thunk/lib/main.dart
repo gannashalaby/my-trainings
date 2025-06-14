@@ -11,7 +11,6 @@ import 'package:ecommerce_redux_thunk/redux/states/app_state.dart';
 import 'package:ecommerce_redux_thunk/redux/reducers/root_reducer.dart';
 import 'package:ecommerce_redux_thunk/redux/middlewares/user_thunk.dart';
 import 'package:ecommerce_redux_thunk/redux/middlewares/product_thunk.dart';
-import 'package:ecommerce_redux_thunk/services/product_service.dart';
 
 void main() async{
   final store = Store<AppState>(
@@ -23,9 +22,9 @@ void main() async{
       ...createProductMiddleware(),
     ],
   );
-  WidgetsFlutterBinding.ensureInitialized();
-  final productService = ProductService();
-  await productService.insertMockProductsIfEmpty();
+  // WidgetsFlutterBinding.ensureInitialized();
+  // final productService = ProductService();
+  // await productService.insertMockProductsIfEmpty();
   runApp(EcommerceThunk(store: store));
 }
 

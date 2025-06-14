@@ -32,23 +32,31 @@ class ProductService {
           description: "Stylish and lightweight.",
           imagePath: productImagePaths[2],
         ),
+        Product(
+          id: 4,
+          name: "Puma Sneakers",
+          price: 89.99,
+          quantity: 8,
+          description: "Stylish and lightweight.",
+          imagePath: productImagePaths[3],
+        ),
       ];
     }
 
   final String _fileName = 'products.json';
   
-  Future<void> insertMockProductsIfEmpty() async {
-  final file = await _getFile();
-  final content = await file.readAsString();
+  // Future<void> insertMockProductsIfEmpty() async {
+  // final file = await _getFile();
+  // final content = await file.readAsString();
 
-  final jsonData = jsonDecode(content);
-    if ((jsonData['product'] as List).isEmpty) {
-      final mockProducts = getMockProducts();
-      final productList = ProductList(productModel: mockProducts);
-      final json = jsonEncode(productList.toJson());
-      await file.writeAsString(json);
-    }
-  }
+  // final jsonData = jsonDecode(content);
+  //   if ((jsonData['product'] as List).isNotEmpty) {
+  //     final mockProducts = getMockProducts();
+  //     final productList = ProductList(productModel: []);
+  //     final json = jsonEncode(productList.toJson());
+  //     await file.writeAsString(json);
+  //   }
+  // }
 
   Future<String> _getFilePath() async {
     final directory = await getApplicationDocumentsDirectory();
