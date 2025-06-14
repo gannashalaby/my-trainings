@@ -22,9 +22,7 @@ void main() async{
       ...createProductMiddleware(),
     ],
   );
-  // WidgetsFlutterBinding.ensureInitialized();
-  // final productService = ProductService();
-  // await productService.insertMockProductsIfEmpty();
+  
   runApp(EcommerceThunk(store: store));
 }
 

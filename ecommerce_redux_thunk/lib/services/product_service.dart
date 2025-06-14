@@ -108,19 +108,6 @@ class ProductService {
     }
 
   final String _fileName = 'products.json';
-  
-  // Future<void> insertMockProductsIfEmpty() async {
-  // final file = await _getFile();
-  // final content = await file.readAsString();
-
-  // final jsonData = jsonDecode(content);
-  //   if ((jsonData['product'] as List).isNotEmpty) {
-  //     final mockProducts = getMockProducts();
-  //     final productList = ProductList(productModel: []);
-  //     final json = jsonEncode(productList.toJson());
-  //     await file.writeAsString(json);
-  //   }
-  // }
 
   Future<String> _getFilePath() async {
     final directory = await getApplicationDocumentsDirectory();

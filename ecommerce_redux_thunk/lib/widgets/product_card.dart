@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/product_model.dart';
 import '../constans/colors.dart';
+import '../screens/product_screen.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -9,7 +10,15 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          ProductScreen.id,
+          arguments: product,
+        );
+      },
+    child: Container(
       decoration: BoxDecoration(
         color: CustomColors.backgroundColor,
         borderRadius: BorderRadius.circular(12),
@@ -42,6 +51,7 @@ class ProductCard extends StatelessWidget {
           const SizedBox(height: 8),
         ],
       ),
+    ),
     );
   }
 }
