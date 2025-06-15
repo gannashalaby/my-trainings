@@ -9,6 +9,7 @@ import 'package:redux/redux.dart';
 
 class HomeScreen extends StatelessWidget  {
   static const String id = '/home';
+  
   const HomeScreen({super.key});
 
   @override

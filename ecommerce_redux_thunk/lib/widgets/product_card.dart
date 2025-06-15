@@ -18,40 +18,44 @@ class ProductCard extends StatelessWidget {
           arguments: product,
         );
       },
-    child: Container(
-      decoration: BoxDecoration(
-        color: CustomColors.backgroundColor,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4)],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-              child: Image.asset(
-                product.imagePath,
-                width: double.infinity,
-                fit: BoxFit.cover,
+      child: Container(
+        decoration: BoxDecoration(
+          color: CustomColors.backgroundColor,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: const [
+            BoxShadow(color: CustomColors.textColor, blurRadius: 4),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                ),
+                child: Image.asset(
+                  product.imagePath,
+                  width: double.infinity,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Text(
-              product.name,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                product.name,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text('\$${product.price.toStringAsFixed(2)}'),
-          ),
-          const SizedBox(height: 8),
-        ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text('\SAR ${product.price.toStringAsFixed(2)}'),
+            ),
+            const SizedBox(height: 8),
+          ],
+        ),
       ),
-    ),
     );
   }
 }

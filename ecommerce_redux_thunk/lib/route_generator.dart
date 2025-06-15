@@ -5,6 +5,7 @@ import 'package:ecommerce_redux_thunk/screens/register_screen.dart';
 import 'package:ecommerce_redux_thunk/screens/home_screen.dart';
 import 'package:ecommerce_redux_thunk/screens/product_screen.dart';
 import 'package:ecommerce_redux_thunk/models/product_model.dart';
+import 'package:ecommerce_redux_thunk/screens/cart_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -18,6 +19,9 @@ class RouteGenerator {
       case HomeScreen.id:
         return MaterialPageRoute(builder: (context) => const HomeScreen());
       case ProductScreen.id:
+        final args = settings.arguments as Product;
+        return MaterialPageRoute(builder: (context) => ProductScreen(product: args));
+      case CartScreen.id:
         final args = settings.arguments as Product;
         return MaterialPageRoute(builder: (context) => ProductScreen(product: args));
       
