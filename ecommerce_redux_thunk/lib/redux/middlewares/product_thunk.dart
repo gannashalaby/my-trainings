@@ -1,4 +1,3 @@
-import 'package:ecommerce_redux_thunk/models/product_model.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:ecommerce_redux_thunk/services/product_service.dart';
