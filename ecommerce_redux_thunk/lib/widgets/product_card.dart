@@ -38,6 +38,9 @@ class ProductCard extends StatelessWidget {
                   product.imagePath,
                   width: double.infinity,
                   fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Center(child: Icon(Icons.broken_image));
+                  },
                 ),
               ),
             ),

@@ -187,9 +187,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ElevatedButton(
                       onPressed: () {
                         store.dispatch(clearUsersThunk());
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('All users deleted.')),
-                        );
                       },
                       child: const Text(
                         'Clear Users',

@@ -175,8 +175,8 @@ class _LoginScreenState extends State<LoginScreen> {
           bottomNavigationBar: StoreConnector<AppState, Store<AppState>>(
             converter: (store) => store,
             builder: (context, store) {
-              return Container(
-                padding: const EdgeInsets.all(16.0),
+              return SingleChildScrollView(
+                // padding: const EdgeInsets.all(16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -192,9 +192,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ElevatedButton(
                       onPressed: () {
                         store.dispatch(clearUsersThunk());
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('All users deleted.')),
-                        );
                       },
                       child: const Text(
                         'Clear Users',

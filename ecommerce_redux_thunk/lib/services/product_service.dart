@@ -123,6 +123,10 @@ class ProductService {
     final file = await _getFile();
     final content = await file.readAsString();
     print('🔍 products.json content:\n$content');
+
+    final json = jsonDecode(content);
+    final productList = ProductList.fromJson(json);
+    print('📏 Number of products in products.json: ${productList.productModel.length}');
   }
 
   Future<File> _getFile() async {
@@ -144,15 +148,27 @@ class ProductService {
     return ProductList.fromJson(json);
   }
 
+  Future<List<Product>> getRecommendedProducts(Product currentProduct) async {
+    final productList = await getAllProducts();
+    return productList.productModel
+        .where((p) => p.id != currentProduct.id)
+                      // && (p.price - currentProduct.price).abs() <= 10)
+        // .take(4)
+        .toList();
+  }
+
   Future<void> addProduct(Product newProduct) async {
     final file = await _getFile();
     final productList = await getAllProducts();
 
-    final updatedList = List<Product>.from(productList.productModel)..add(newProduct);
-    final updatedUserList = ProductList(productModel: updatedList);
+    final exists = productList.productModel.any((product) => product.id == newProduct.id);
+    if (!exists) {
+      final updatedList = List<Product>.from(productList.productModel)..add(newProduct);
+      final updatedProductList = ProductList(productModel: updatedList);
 
-    final json = jsonEncode(updatedUserList.toJson());
-    await file.writeAsString(json);
+      final json = jsonEncode(updatedProductList.toJson());
+      await file.writeAsString(json);
+    }
   }
 
   Future<void> clearProducts() async {

@@ -1,3 +1,4 @@
+import 'package:ecommerce_redux_thunk/models/product_model.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:ecommerce_redux_thunk/services/product_service.dart';
@@ -14,7 +15,7 @@ ThunkAction<AppState> fetchProductsThunk() {
       // await Future.delayed(const Duration(seconds: 2));
 
       final existingProducts = await productService.getAllProducts();
-        final mockProducts = productService.getMockProducts();
+      final mockProducts = productService.getMockProducts();
 
       if (existingProducts.productModel != mockProducts) {
         for (var product in mockProducts) {
@@ -25,6 +26,19 @@ ThunkAction<AppState> fetchProductsThunk() {
       } else {
         store.dispatch(FetchProductSuccess(existingProducts.productModel));
       }
+    } catch (error) {
+      store.dispatch(FetchProductFailure(error.toString()));
+    }
+  };
+}
+
+ThunkAction<AppState> clearProductsThunk() {
+  return (Store<AppState> store) async {
+    store.dispatch(FetchProductRequest());
+
+    try {
+      await productService.clearProducts();
+      store.dispatch(FetchProductSuccess([]));
     } catch (error) {
       store.dispatch(FetchProductFailure(error.toString()));
     }
@@ -42,6 +56,5 @@ ThunkAction<AppState> printProductPathThunk() {
     await productService.getJsonFilePath();
   };
 }
-
 
 List<Middleware<AppState>> createProductMiddleware() => [];

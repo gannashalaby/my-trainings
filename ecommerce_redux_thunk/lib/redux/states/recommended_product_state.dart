@@ -1,33 +1,32 @@
 import 'package:ecommerce_redux_thunk/models/product_model.dart';
 
-class ProductState {
+class RecommendedProductState {
   final bool isLoading;
-  final List<Product> products;
+  final List<Product> recommendedProducts;
   final String? errorMessage;
 
-  ProductState({
+  RecommendedProductState({
     required this.isLoading,
-    required this.products,
+    required this.recommendedProducts,
     this.errorMessage,
   });
 
-  ProductState copyWith({
+  RecommendedProductState copyWith({
     bool? isLoading,
-    List<Product>? products,
     List<Product>? recommendedProducts,
     String? errorMessage,
   }) {
-    return ProductState(
+    return RecommendedProductState(
       isLoading: isLoading ?? this.isLoading,
-      products: products ?? this.products,
+      recommendedProducts: recommendedProducts ?? this.recommendedProducts,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
-  factory ProductState.initial() {
-    return ProductState(
+  factory RecommendedProductState.initial() {
+    return RecommendedProductState(
       isLoading: false,
-      products: [],
+      recommendedProducts: [],
       errorMessage: null,
     );
   }

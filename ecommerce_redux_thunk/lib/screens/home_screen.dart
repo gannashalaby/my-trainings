@@ -56,8 +56,8 @@ class HomeScreen extends StatelessWidget  {
         bottomNavigationBar: StoreConnector<AppState, Store<AppState>>(
             converter: (store) => store,
             builder: (context, store) {
-              return Container(
-                padding: const EdgeInsets.all(16.0),
+              return SingleChildScrollView(
+                // padding: const EdgeInsets.all(16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -67,6 +67,15 @@ class HomeScreen extends StatelessWidget  {
                       },
                       child: const Text(
                         'Print Products',
+                        style: CustomTextStyles.smallButtonText,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        store.dispatch(clearProductsThunk());
+                      },
+                      child: const Text(
+                        'Clear Products',
                         style: CustomTextStyles.smallButtonText,
                       ),
                     ),
