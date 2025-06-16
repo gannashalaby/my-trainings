@@ -21,6 +21,9 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController searchController = TextEditingController();
   String searchQuery = '';
 
+  String selectedFilter = 'All';
+  final List<String> filterOptions = ['All', 'Low Price', 'High Price'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,38 +56,85 @@ class _HomeScreenState extends State<HomeScreen> {
                    p.description.toLowerCase().contains(query);
           }).toList();
 
+          if (selectedFilter == 'Low Price') {
+            filteredProducts.sort((a, b) => a.price.compareTo(b.price));
+          } else if (selectedFilter == 'High Price') {
+            filteredProducts.sort((a, b) => b.price.compareTo(a.price));
+          }
+
           return Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: searchController,
-                  cursorColor: CustomColors.backgroundColor,
-                  style: TextStyle(color: CustomColors.backgroundColor),
-                  decoration: InputDecoration(
-                    hintText: 'Search products...',
-                    hintStyle: TextStyle(color: CustomColors.backgroundColor),
-                    prefixIcon: const Icon(
-                      Icons.search,
-                      color: CustomColors.backgroundColor,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: CustomColors.backgroundColor), // 🔹 border color (inactive)
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: CustomColors.backgroundColor, width: 2), // 🔹 border color (active)
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        controller: searchController,
+                        cursorColor: CustomColors.backgroundColor,
+                        style: TextStyle(color: CustomColors.backgroundColor),
+                        decoration: InputDecoration(
+                          hintText: 'Search products...',
+                          hintStyle: TextStyle(color: CustomColors.backgroundColor),
+                          prefixIcon: const Icon(
+                            Icons.search,
+                            color: CustomColors.backgroundColor,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: CustomColors.backgroundColor),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: CustomColors.backgroundColor, width: 2),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            searchQuery = value;
+                          });
+                        },
+                      ),
                     ),
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      searchQuery = value;
-                    });
-                  },
-                ),
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          border: Border.all(color: CustomColors.backgroundColor),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            isExpanded: true,
+                            value: selectedFilter,
+                            iconEnabledColor: CustomColors.backgroundColor,
+                            style: TextStyle(color: CustomColors.backgroundColor),
+                            borderRadius: BorderRadius.circular(12),
+                            items: filterOptions.map((filter) {
+                              return DropdownMenuItem(
+                                value: filter,
+                                child: Text(filter),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedFilter = value!;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-
+              
               Expanded(
                 child: GridView.builder(
                   padding: const EdgeInsets.all(16),
