@@ -159,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
         converter: (store) => store,
         builder: (context, store) {
           return SingleChildScrollView(
-            // padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -172,15 +172,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: CustomTextStyles.smallButtonText,
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    store.dispatch(clearProductsThunk());
-                  },
-                  child: const Text(
-                    'Clear Products',
-                    style: CustomTextStyles.smallButtonText,
-                  ),
-                ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     store.dispatch(clearProductsThunk());
+                //   },
+                //   child: const Text(
+                //     'Clear Products',
+                //     style: CustomTextStyles.smallButtonText,
+                //   ),
+                // ),
                 ElevatedButton(
                   onPressed: () {
                     store.dispatch(printProductPathThunk());

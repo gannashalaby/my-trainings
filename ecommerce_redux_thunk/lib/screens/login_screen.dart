@@ -1,9 +1,10 @@
-import 'package:ecommerce_redux_thunk/screens/register_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_redux_thunk/services/user_service.dart';
-import 'package:ecommerce_redux_thunk/constans/colors.dart';
-import 'package:ecommerce_redux_thunk/constans/texts.dart';
-import 'package:ecommerce_redux_thunk/screens/home_screen.dart';
+import '../screens/register_screen.dart';
+import '../services/user_service.dart';
+import '../constans/colors.dart';
+import '../constans/texts.dart';
+import '../screens/home_screen.dart';
+import '../widgets/user_bottom_bar.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ecommerce_redux_thunk/redux/states/app_state.dart';
@@ -172,46 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          bottomNavigationBar: StoreConnector<AppState, Store<AppState>>(
-            converter: (store) => store,
-            builder: (context, store) {
-              return SingleChildScrollView(
-                // padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        store.dispatch(printUsersThunk());
-                      },
-                      child: const Text(
-                        'Print Users',
-                        style: CustomTextStyles.smallButtonText,
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        store.dispatch(clearUsersThunk());
-                      },
-                      child: const Text(
-                        'Clear Users',
-                        style: CustomTextStyles.smallButtonText,
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        store.dispatch(printUserPathThunk());
-                      },
-                      child: const Text(
-                        'Print Users Path',
-                        style: CustomTextStyles.smallButtonText,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
+          bottomNavigationBar: const UserBottomBar(),
         );
       },
     );
