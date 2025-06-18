@@ -88,7 +88,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       converter: (store) => store,
       builder: (context, store) {
         return Scaffold(
-          appBar: AppBar(title: const Text('Sign Up Screen')),
+          appBar: AppBar(title: const Text('Sign Up Page')),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Form(

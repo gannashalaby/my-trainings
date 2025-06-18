@@ -21,9 +21,8 @@ class RouteGenerator {
       case ProductScreen.id:
         final args = settings.arguments as Product;
         return MaterialPageRoute(builder: (context) =>  ProductScreen(product: args));
-      // case CartScreen.id:
-      //   final args = settings.arguments as Product;
-      //   return MaterialPageRoute(builder: (context) => ProductScreen(product: args));
+      case CartScreen.id:
+        return MaterialPageRoute(builder: (_) => const CartScreen());
       
       default:
         return MaterialPageRoute(

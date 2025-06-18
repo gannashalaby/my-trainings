@@ -6,5 +6,5 @@ class CustomColors {
   static const Color textColor = Color.fromARGB(255, 0, 0, 0);
   static const Color successColor = Color.fromARGB(255, 7, 11, 255);
   static const Color errorColor = Color(0xFFB00020);
-  static const Color navBarColor = Color.fromARGB(255, 144, 219, 238);
+  static const Color warningColor = Color.fromARGB(255, 176, 106, 0);
 }

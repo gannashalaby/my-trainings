@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
       converter: (store) => store,
       builder: (context, store) {
         return Scaffold(
-          appBar: AppBar(title: const Text('Log In Screen')),
+          appBar: AppBar(title: const Text('Log In Page')),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Form(

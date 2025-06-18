@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import '../models/product_model.dart';
+import '../models/cart_model.dart';
 import '../constans/colors.dart';
 import '../constans/texts.dart';
 import '../screens/cart_screen.dart';
@@ -8,6 +9,7 @@ import '../widgets/product_card.dart';
 import '../redux/states/app_state.dart';
 import '../redux/states/recommended_product_state.dart';
 import '../redux/middlewares/recommended_product_thunk.dart';
+import '../widgets/cart_quantity_control.dart';
 
 class ProductScreen extends StatefulWidget {
   static const String id = '/productDetails';
@@ -24,7 +26,27 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.product.name)),
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: Text(
+                widget.product.name,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: const TextStyle(fontSize: 18),
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.shopping_cart_outlined),
+              onPressed: () {
+                Navigator.pushNamed(context, '/cart');
+              },
+            ),
+          ],
+        ),
+      ),
 
       body: StoreConnector<AppState, RecommendedProductState>(
         onInit: (store) => store.dispatch(fetchRecommendedProductsThunk(widget.product)),
@@ -103,26 +125,8 @@ class _ProductScreenState extends State<ProductScreen> {
                               ],
                             ),
                           ),
-                          Row(
-                            children: [
-                              const Text('+', style: TextStyle(fontSize: 20)),
-                              const SizedBox(width: 8),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    CartScreen.id,
-                                    arguments: widget.product,
-                                  );
-                                },
-                                child: const Text(
-                                  'Add to Cart',
-                                  style: CustomTextStyles.smallButtonText,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              const Text('-', style: TextStyle(fontSize: 20)),
-                            ],
+                          CartQuantityControls(
+                            item: CartItem(productInCart: widget.product, quantityInCart: 1),
                           ),
                         ],
                       ),
@@ -174,7 +178,16 @@ class _ProductScreenState extends State<ProductScreen> {
                       children: [
                         const Text(
                           'Recommended Products',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: CustomColors.backgroundColor),
+                          style: TextStyle(
+                            color: CustomColors.backgroundColor,
+                            shadows: [
+                              Shadow(
+                                offset: Offset(1.5, 1.5),
+                                blurRadius: 1.0,
+                                color: CustomColors.textColor,
+                              ),
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 10),
                         GridView.builder(

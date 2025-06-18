@@ -27,7 +27,20 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Products')),
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('Home Page'),
+            IconButton(
+              icon: const Icon(Icons.shopping_cart_outlined),
+              onPressed: () {
+                Navigator.pushNamed(context, '/cart');
+              },
+            ),
+          ],
+        ),
+      ),
 
       body: StoreConnector<AppState, ProductState>(
         onInit: (store) => store.dispatch(fetchProductsThunk()),
