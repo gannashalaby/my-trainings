@@ -3,8 +3,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import '../models/product_model.dart';
 import '../models/cart_model.dart';
 import '../constans/colors.dart';
-import '../constans/texts.dart';
-import '../screens/cart_screen.dart';
 import '../widgets/product_card.dart';
 import '../redux/states/app_state.dart';
 import '../redux/states/recommended_product_state.dart';

@@ -4,6 +4,7 @@ import '../redux/states/app_state.dart';
 import '../redux/middlewares/cart_thunk.dart';
 import '../widgets/cart_item_tile.dart';
 import '../constans/colors.dart';
+
 class CartScreen extends StatelessWidget {
   static const String id = '/cart';
 
@@ -12,6 +13,10 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, AppState>(
+      onInit: (store) {
+        final username = store.state.userState.currentUser?.name;
+        store.dispatch(loadCartThunk(username));
+      },
       converter: (store) => store.state,
       builder: (context, state) {
         final cartItems = state.cartState.items;

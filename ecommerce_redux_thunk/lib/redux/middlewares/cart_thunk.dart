@@ -6,7 +6,7 @@ import '../../models/cart_model.dart';
 import '../../services/cart_service.dart';
 import '../actions/cart_action.dart';
 
-ThunkAction<AppState> loadCartThunk(String username) {
+ThunkAction<AppState> loadCartThunk([String? username]) {
   return (Store<AppState> store) async {
     final items = await CartService().loadCart(username);
     store.dispatch(LoadCartAction(items));
@@ -40,17 +40,13 @@ ThunkAction<AppState> addToCartThunk(CartItem item, BuildContext context) {
     store.dispatch(AddToCartAction(item));
 
     final username = store.state.userState.currentUser?.name;
-    if (username != null) {
-      await CartService().saveCart(username, store.state.cartState.items);
-    }
+    await CartService().saveCart(username, store.state.cartState.items);
 
-    // Show success message
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Item added to cart successfully")),
     );
   };
 }
-
 
 ThunkAction<AppState> decreaseCartItemQuantityThunk(int productId, BuildContext context) {
   return (Store<AppState> store) async {
@@ -71,13 +67,13 @@ ThunkAction<AppState> decreaseCartItemQuantityThunk(int productId, BuildContext 
     } else {
       store.dispatch(RemoveFromCartAction(productId));
     }
-    
+
+    final username = store.state.userState.currentUser?.name;
+    await CartService().saveCart(username, store.state.cartState.items);
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Item removed from cart successfully")),
     );
-    
-    final username = store.state.userState.currentUser!.name;
-    await CartService().saveCart(username, store.state.cartState.items);
   };
 }
 
@@ -86,9 +82,7 @@ ThunkAction<AppState> removeFromCartThunk(int productId) {
     store.dispatch(RemoveFromCartAction(productId));
 
     final username = store.state.userState.currentUser?.name;
-    if (username != null) {
-      await CartService().saveCart(username, store.state.cartState.items);
-    }
+    await CartService().saveCart(username, store.state.cartState.items);
   };
 }
 
@@ -97,9 +91,7 @@ ThunkAction<AppState> clearCartThunk() {
     store.dispatch(ClearCartAction());
 
     final username = store.state.userState.currentUser?.name;
-    if (username != null) {
-      await CartService().clearCart(username);
-    }
+    await CartService().clearCart(username);
   };
 }
 
