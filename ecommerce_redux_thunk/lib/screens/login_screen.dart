@@ -7,8 +7,8 @@ import '../screens/home_screen.dart';
 import '../widgets/user_bottom_bar.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:ecommerce_redux_thunk/redux/states/app_state.dart';
-import 'package:ecommerce_redux_thunk/redux/middlewares/user_thunk.dart';
+import '../redux/states/app_state.dart';
+import '../redux/middlewares/user_thunk.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = '/login';
@@ -40,8 +40,10 @@ class _LoginScreenState extends State<LoginScreen> {
     final users = await _userService.getAllUsers();
 
     final bool usernameExists = users.userList.any((user) => user.name == name);
-    final wrongPassword = users.userList.any((user) => user.name == name && user.password != password);
-    
+    final wrongPassword = users.userList.any(
+      (user) => user.name == name && user.password != password,
+    );
+
     if (!usernameExists) {
       setState(() {
         _isLoading = false;
@@ -144,30 +146,81 @@ class _LoginScreenState extends State<LoginScreen> {
                     validator: (value) =>
                         value!.isEmpty ? 'Please enter password' : null,
                   ),
+
                   const SizedBox(height: 24),
+
                   _isLoading
                       ? const CircularProgressIndicator()
                       : ElevatedButton(
-                          onPressed: () => _submit(store),
+                          onPressed: () {
+                            _submit(store);
+                          },
                           child: const Text(
                             'Login',
                             style: CustomTextStyles.buttonText,
                           ),
                         ),
-                  const SizedBox(height: 20),
-                  Text(
-                    'Don\'t have an account?',
-                    style: CustomTextStyles.caption,
-                  ),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, RegisterScreen.id);
-                    },
-                    child: const Text(
-                      'Signup',
-                      style: CustomTextStyles.buttonText,
-                    ),
+                  const SizedBox(height: 40),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Don\'t have an account?',
+                            style: TextStyle(
+                              color: CustomColors.backgroundColor,
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, RegisterScreen.id);
+                            },
+                            child: Text(
+                              'Signup Page',
+                              style: TextStyle(
+                                color: CustomColors.backgroundColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(height: 20),
+                      Text(
+                        'Or',
+                        style: TextStyle(color: CustomColors.backgroundColor),
+                      ),
+                      SizedBox(height: 20),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Continue as Guest?',
+                            style: TextStyle(
+                              color: CustomColors.backgroundColor,
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, HomeScreen.id);
+                            },
+                            child: Text(
+                              'Home Page',
+                              style: TextStyle(
+                                color: CustomColors.backgroundColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),

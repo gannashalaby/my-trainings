@@ -7,6 +7,7 @@ import '../redux/middlewares/product_thunk.dart';
 import '../constans/texts.dart';
 import '../constans/colors.dart';
 import '../widgets/product_card.dart';
+import '../widgets/settings_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = '/home';
@@ -40,7 +41,19 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+        
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              icon: const Icon(Icons.settings),
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+            ),
+          ),
+        ],
       ),
+      endDrawer: const SettingsDrawer(),
 
       body: StoreConnector<AppState, ProductState>(
         onInit: (store) => store.dispatch(fetchProductsThunk()),

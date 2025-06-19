@@ -4,6 +4,7 @@ import 'package:ecommerce_redux_thunk/models/user_model.dart';
 import 'package:ecommerce_redux_thunk/services/user_service.dart';
 import 'package:ecommerce_redux_thunk/redux/actions/user_action.dart';
 import 'package:ecommerce_redux_thunk/redux/states/app_state.dart';
+import 'package:ecommerce_redux_thunk/services/cart_service.dart';
 
 final userService = UserService();
 
@@ -43,6 +44,19 @@ ThunkAction<AppState> loginUserThunk(String name, String password) {
     } catch (e) {
       store.dispatch(LoginUserFailure(e.toString()));
     }
+  };
+}
+
+ThunkAction<AppState> logoutUserThunk() {
+  return (Store<AppState> store) async {
+    String? username = store.state.userState.currentUser?.name;
+
+    if (username != null && username.isNotEmpty) {
+      // print(username + " is logging out");
+      await CartService().saveCart(username, store.state.cartState.items);
+    }
+    store.dispatch(LogoutUserAction());
+      // print(username! + " logged out successfully");
   };
 }
 

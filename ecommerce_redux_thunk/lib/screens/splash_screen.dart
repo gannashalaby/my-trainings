@@ -1,3 +1,4 @@
+import 'package:ecommerce_redux_thunk/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_redux_thunk/screens/login_screen.dart';
 import 'package:ecommerce_redux_thunk/constans/colors.dart';
@@ -37,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen>
     Future.delayed(const Duration(seconds: 5), () {
       if (!mounted) return;
       _splashAnimController.dispose();
-      Navigator.of(context).pushReplacementNamed(LoginScreen.id);
+      Navigator.of(context).pushReplacementNamed(HomeScreen.id);
     });
   }
 

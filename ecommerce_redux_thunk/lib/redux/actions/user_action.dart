@@ -24,6 +24,8 @@ class LoginUserFailure {
   LoginUserFailure(this.error);
 }
 
+class LogoutUserAction {}
+
 class UserJsonRequest {}
 class UserJsonSuccess {}
 class UserJsonFailure {

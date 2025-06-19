@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:ecommerce_redux_thunk/constans/colors.dart';
-import 'package:ecommerce_redux_thunk/constans/texts.dart';
-import 'package:ecommerce_redux_thunk/route_generator.dart';
-import 'package:ecommerce_redux_thunk/screens/splash_screen.dart';
+import '../constans/colors.dart';
+import '../constans/texts.dart';
+import '../route_generator.dart';
+import '../screens/splash_screen.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
-import 'package:ecommerce_redux_thunk/redux/states/app_state.dart';
-import 'package:ecommerce_redux_thunk/redux/reducers/root_reducer.dart';
-import 'package:ecommerce_redux_thunk/redux/middlewares/user_thunk.dart';
-import 'package:ecommerce_redux_thunk/redux/middlewares/product_thunk.dart';
+import '../redux/states/app_state.dart';
+import '../redux/reducers/root_reducer.dart';
+import '../redux/middlewares/user_thunk.dart';
+import '../redux/middlewares/product_thunk.dart';
 
 void main() async{
   final store = Store<AppState>(

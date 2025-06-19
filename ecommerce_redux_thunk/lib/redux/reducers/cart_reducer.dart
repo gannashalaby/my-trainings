@@ -1,6 +1,9 @@
-import 'package:ecommerce_redux_thunk/redux/actions/cart_action.dart';
-import 'package:ecommerce_redux_thunk/redux/states/cart_state.dart';
+import '../actions/cart_action.dart';
+import '../states/cart_state.dart';
 import '../../models/cart_model.dart';
+
+import '../actions/user_action.dart';
+import '../states/user_state.dart';
 
 CartState cartReducer(CartState state, dynamic action) {
   if (action is LoadCartAction) {
@@ -36,6 +39,8 @@ CartState cartReducer(CartState state, dynamic action) {
 
   } else if (action is ClearCartAction) {
     return state.copyWith(items: []);
+  } else if (action is LogoutUserAction) {
+    return CartState(items: []);
   }
 
   return state;

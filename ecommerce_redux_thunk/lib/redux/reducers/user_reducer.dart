@@ -1,5 +1,5 @@
-import 'package:ecommerce_redux_thunk/redux/actions/user_action.dart';
-import 'package:ecommerce_redux_thunk/redux/states/user_state.dart';
+import '../actions/user_action.dart';
+import '../states/user_state.dart';
 
 UserState userReducer(UserState state, dynamic action) {
   if (action is RegisterUserRequest || action is LoginUserRequest) {
@@ -14,6 +14,12 @@ UserState userReducer(UserState state, dynamic action) {
     return state.copyWith(
       isLoading: false,
       errorMessage: action.error,
+    );
+  } else if (action is LogoutUserAction) {
+    return state.copyWith(
+      currentUser: null,
+      isLoading: false,
+      errorMessage: null,
     );
   }
   return state;
