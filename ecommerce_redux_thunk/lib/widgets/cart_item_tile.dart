@@ -20,6 +20,24 @@ class CartItemTile extends StatelessWidget {
         final isVeryLowStock = item.isVeryLowStock;
         final isLowStock = item.isLowStock;
 
+        Widget? _stockText(CartItem item) {
+          if (item.isSoldOut) {
+            return const Text('Sold Out', style: TextStyle(color: CustomColors.errorColor));
+          } else if (item.isVeryLowStock) {
+            return Text('Only ${item.productInCart.quantity} left!',
+                style: const TextStyle(color: CustomColors.warningColor, fontWeight: FontWeight.bold));
+          } else if (item.isLowStock) {
+            return const Text('Low stock!',
+                style: TextStyle(color: CustomColors.warningColor, fontWeight: FontWeight.bold));
+          }
+          return null;
+        }
+
+        print('Quantity: ${item.productInCart.quantity}');
+        print('SoldOut: $isSoldOut, VeryLow: $isVeryLowStock, Low: $isLowStock');
+
+        print('Q: ${item.productInCart.quantity} | SoldOut: $isSoldOut | VeryLow: $isVeryLowStock | Low: $isLowStock');
+
         return ListTile(
           leading: Image.asset(item.productInCart.imagePath, width: 50, height: 50),
           title: Text(
@@ -30,15 +48,10 @@ class CartItemTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '\SAR ${item.productInCart.price.toStringAsFixed(2)}',
+                'SAR ${item.productInCart.price.toStringAsFixed(2)}',
                 style: TextStyle(color: CustomColors.backgroundColor, fontWeight: FontWeight.bold),
               ),
-              if (isSoldOut)
-                const Text('Sold Out', style: TextStyle(color: CustomColors.errorColor))
-              else if (isVeryLowStock)
-                Text('Only ${item.productInCart.quantity} left!', style: const TextStyle(color: CustomColors.warningColor, fontWeight: FontWeight.bold))
-              else if (isLowStock)
-                const Text('Low stock!', style: TextStyle(color: CustomColors.warningColor, fontWeight: FontWeight.bold)),
+              if (_stockText(item) != null) _stockText(item)!,
             ],
           ),
           trailing: CartQuantityControls(item: item),

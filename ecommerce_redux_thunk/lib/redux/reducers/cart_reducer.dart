@@ -3,7 +3,6 @@ import '../states/cart_state.dart';
 import '../../models/cart_model.dart';
 
 import '../actions/user_action.dart';
-import '../states/user_state.dart';
 
 CartState cartReducer(CartState state, dynamic action) {
   if (action is LoadCartAction) {

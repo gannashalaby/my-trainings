@@ -1,8 +1,8 @@
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
-import 'package:ecommerce_redux_thunk/services/product_service.dart';
-import 'package:ecommerce_redux_thunk/redux/actions/product_action.dart';
-import 'package:ecommerce_redux_thunk/redux/states/app_state.dart';
+import '../../services/product_service.dart';
+import '../actions/product_action.dart';
+import '../states/app_state.dart';
 
 final productService = ProductService();
 

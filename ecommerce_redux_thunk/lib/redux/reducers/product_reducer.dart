@@ -1,5 +1,5 @@
-import 'package:ecommerce_redux_thunk/redux/actions/product_action.dart';
-import 'package:ecommerce_redux_thunk/redux/states/product_state.dart';
+import '../actions/product_action.dart';
+import '../states/product_state.dart';
 
 ProductState productReducer(ProductState state, dynamic action) {
   if (action is FetchProductRequest) {

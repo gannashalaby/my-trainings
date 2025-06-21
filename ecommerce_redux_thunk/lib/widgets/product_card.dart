@@ -14,8 +14,23 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Don't display sold out products
-    if (product.quantity == 0) return const SizedBox.shrink();
+    final isVeryLowStock = product.quantity > 0 && product.quantity < 5;
+    final isLowStock = product.quantity >= 5 && product.quantity < 10;
+
+    Widget? stockText() {
+      if (isVeryLowStock) {
+        return Text(
+          '🟠 Only ${product.quantity} left!',
+          style: const TextStyle(color: CustomColors.warningColor, fontWeight: FontWeight.bold),
+        );
+      } else if (isLowStock) {
+        return const Text(
+          '🟡 Low stock!',
+          style: TextStyle(color: CustomColors.warningColor, fontWeight: FontWeight.bold),
+        );
+      }
+      return null;
+    }
 
     return StoreConnector<AppState, VoidCallback>(
       converter: (store) {
@@ -78,6 +93,11 @@ class ProductCard extends StatelessWidget {
                     ],
                   ),
                 ),
+                if (stockText() != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                    child: stockText(),
+                  ),
               ],
             ),
           ),

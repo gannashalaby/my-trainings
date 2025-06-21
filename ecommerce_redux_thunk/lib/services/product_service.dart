@@ -12,7 +12,7 @@ class ProductService {
           id: 1,
           name: "Astatin 20 mg (Atorvastatin)",
           price: 43.45, // SAR
-          quantity: 30,
+          quantity: 90,
           description: "Statin to lower LDL cholesterol & triglycerides; dose: 10–20 mg once daily. Side effects: muscle pain, headache, liver monitoring needed.",
           imagePath: productImagePaths[0],
         ),
@@ -20,7 +20,7 @@ class ProductService {
           id: 2,
           name: "Azera 100 mg (Aspirin)",
           price: 6.35,
-          quantity: 90,
+          quantity: 1,
           description: "Low-dose enteric-coated aspirin to prevent blood clots, heart attacks & strokes; dose: 75–100 mg daily. Side effects: GI upset, bleeding risk.",
           imagePath: productImagePaths[1],
         ),
@@ -28,7 +28,7 @@ class ProductService {
           id: 3,
           name: "Bonecare Calcium Complex",
           price: 60.00,
-          quantity: 30,
+          quantity: 9,
           description: "Supplement with calcium citrate, vit D, zinc & Mg to support bone density and healing.",
           imagePath: productImagePaths[2],
         ),
@@ -36,7 +36,7 @@ class ProductService {
           id: 4,
           name: "Jamieson Calcium 500 mg + Vit D – 90 Caps",
           price: 49.50,
-          quantity: 90,
+          quantity: 3,
           description: "Calcium + vit D supplement to support bone health; common side effects: GI upset.",
           imagePath: productImagePaths[3],
         ),
@@ -52,7 +52,7 @@ class ProductService {
           id: 6,
           name: "Carvidolol (Carvedilol) 6.25 mg",
           price: 12.90,
-          quantity: 30,
+          quantity: 8,
           description: "Beta‑blocker for hypertension/heart failure; initial dose 3.125–6.25 mg BID. Side effects: fatigue, dizziness.",
           imagePath: productImagePaths[5],
         ),
@@ -151,7 +151,8 @@ class ProductService {
   Future<List<Product>> getRecommendedProducts(Product currentProduct) async {
     final productList = await getAllProducts();
     return productList.productModel
-        .where((p) => p.id != currentProduct.id)
+        .where((p) => p.id != currentProduct.id
+                      && p.quantity > 0)
                       // && (p.price - currentProduct.price).abs() <= 10)
         // .take(4)
         .toList();
@@ -162,10 +163,29 @@ class ProductService {
     final productList = await getAllProducts();
 
     final exists = productList.productModel.any((product) => product.id == newProduct.id);
+    final sameQuantity = productList.productModel.any((product) => product.quantity == newProduct.quantity);
     if (!exists) {
       final updatedList = List<Product>.from(productList.productModel)..add(newProduct);
       final updatedProductList = ProductList(productModel: updatedList);
 
+      final json = jsonEncode(updatedProductList.toJson());
+      await file.writeAsString(json);
+    } else if (!sameQuantity) {
+      final updatedProducts = productList.productModel.map((product) {
+        if (product.id == newProduct.id) {
+          return Product(
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            quantity: newProduct.quantity,
+            description: product.description,
+            imagePath: product.imagePath,
+          );
+        }
+        return product;
+      }).toList();
+
+      final updatedProductList = ProductList(productModel: updatedProducts);
       final json = jsonEncode(updatedProductList.toJson());
       await file.writeAsString(json);
     }

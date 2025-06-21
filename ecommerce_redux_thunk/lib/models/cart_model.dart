@@ -10,8 +10,8 @@ class CartItem {
   });
 
   bool get isSoldOut => productInCart.quantity == 0;
-  bool get isLowStock => productInCart.quantity < 10 && productInCart.quantity > 0;
-  bool get isVeryLowStock => productInCart.quantity < 5 && productInCart.quantity > 0;
+  bool get isVeryLowStock => productInCart.quantity > 0 && productInCart.quantity <= 4;
+  bool get isLowStock => productInCart.quantity >= 5 && productInCart.quantity <= 9;
 
   Map<String, dynamic> toJson() => {
         'product': productInCart.toJson(),

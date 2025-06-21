@@ -56,7 +56,9 @@ class _HomeScreenState extends State<HomeScreen> {
       endDrawer: const SettingsDrawer(),
 
       body: StoreConnector<AppState, ProductState>(
-        onInit: (store) => store.dispatch(fetchProductsThunk()),
+        onInit: (store) => {
+          store.dispatch(fetchProductsThunk()),
+        },
         // converter: (store) => store.state.productState.productList,
         converter: (store) => ProductState(
           isLoading: store.state.productState.isLoading,
@@ -78,8 +80,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
           final filteredProducts = product.products.where((p) {
             final query = searchQuery.toLowerCase();
-            return p.name.toLowerCase().contains(query) ||
-                   p.description.toLowerCase().contains(query);
+            final matchesQuery = p.name.toLowerCase().contains(query) ||
+                                p.description.toLowerCase().contains(query);
+            final inStock = p.quantity > 0; // 🔴 hide sold out
+            return matchesQuery && inStock;
           }).toList();
 
           if (selectedFilter == 'Low Price') {

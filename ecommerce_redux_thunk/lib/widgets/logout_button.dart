@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import '../redux/states/app_state.dart';
 import '../redux/middlewares/user_thunk.dart';
 import '../constans/colors.dart';

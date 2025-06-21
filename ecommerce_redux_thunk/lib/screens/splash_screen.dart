@@ -1,11 +1,10 @@
-import 'package:ecommerce_redux_thunk/screens/home_screen.dart';
+import '../screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_redux_thunk/screens/login_screen.dart';
-import 'package:ecommerce_redux_thunk/constans/colors.dart';
-import 'package:ecommerce_redux_thunk/controllers/splash_anim_controller.dart';
-import 'package:ecommerce_redux_thunk/animations/splash_anim.dart';
-import 'package:ecommerce_redux_thunk/constans/texts.dart';
-// import 'package:ecommerce_redux_thunk/paths/imagePaths.dart';
+import '../constans/colors.dart';
+import '../controllers/splash_anim_controller.dart';
+import '../animations/splash_anim.dart';
+import '../constans/texts.dart';
+// import '../paths/imagePaths.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String id = '/';

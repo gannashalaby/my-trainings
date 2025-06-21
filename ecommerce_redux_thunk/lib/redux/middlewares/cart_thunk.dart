@@ -5,6 +5,7 @@ import '../states/app_state.dart';
 import '../../models/cart_model.dart';
 import '../../services/cart_service.dart';
 import '../actions/cart_action.dart';
+import '../middlewares/product_thunk.dart';
 
 ThunkAction<AppState> loadCartThunk([String? username]) {
   return (Store<AppState> store) async {
@@ -23,12 +24,12 @@ ThunkAction<AppState> addToCartThunk(CartItem item, BuildContext context) {
     final newQuantity = existing.quantityInCart + item.quantityInCart;
     final availableStock = item.productInCart.quantity;
 
-    if (availableStock == 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("This item is sold out")),
-      );
-      return;
-    }
+    // if (availableStock == 0) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(content: Text("This item is sold out")),
+    //   );
+    //   return;
+    // }
 
     if (newQuantity > availableStock) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -38,13 +39,14 @@ ThunkAction<AppState> addToCartThunk(CartItem item, BuildContext context) {
     }
 
     store.dispatch(AddToCartAction(item));
+    store.dispatch(fetchProductsThunk()); 
 
     final username = store.state.userState.currentUser?.name;
     await CartService().saveCart(username, store.state.cartState.items);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Item added to cart successfully")),
-    );
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   const SnackBar(content: Text("Item added to cart successfully")),
+    // );
   };
 }
 
@@ -71,9 +73,9 @@ ThunkAction<AppState> decreaseCartItemQuantityThunk(int productId, BuildContext 
     final username = store.state.userState.currentUser?.name;
     await CartService().saveCart(username, store.state.cartState.items);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Item removed from cart successfully")),
-    );
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   const SnackBar(content: Text("Item removed from cart successfully")),
+    // );
   };
 }
 
