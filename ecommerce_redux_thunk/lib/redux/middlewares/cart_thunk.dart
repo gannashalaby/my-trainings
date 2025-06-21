@@ -16,6 +16,7 @@ ThunkAction<AppState> loadCartThunk([String? username]) {
 
 ThunkAction<AppState> addToCartThunk(CartItem item, BuildContext context) {
   return (Store<AppState> store) async {
+    store.dispatch(syncProductsThunk()); 
     final existing = store.state.cartState.items.firstWhere(
       (e) => e.productInCart.id == item.productInCart.id,
       orElse: () => CartItem(productInCart: item.productInCart, quantityInCart: 0),
@@ -39,7 +40,6 @@ ThunkAction<AppState> addToCartThunk(CartItem item, BuildContext context) {
     }
 
     store.dispatch(AddToCartAction(item));
-    store.dispatch(fetchProductsThunk()); 
 
     final username = store.state.userState.currentUser?.name;
     await CartService().saveCart(username, store.state.cartState.items);

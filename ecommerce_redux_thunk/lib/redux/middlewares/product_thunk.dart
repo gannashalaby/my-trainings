@@ -13,18 +13,31 @@ ThunkAction<AppState> fetchProductsThunk() {
     try {
       // await Future.delayed(const Duration(seconds: 2));
 
-      final existingProducts = await productService.getAllProducts();
+      // final existingProducts = await productService.getAllProducts();
       final mockProducts = productService.getMockProducts();
 
-      if (existingProducts.productModel != mockProducts) {
+      // if (existingProducts.productModel != mockProducts) {
         for (var product in mockProducts) {
           await productService.addProduct(product);
         }
 
         store.dispatch(FetchProductSuccess(mockProducts));
-      } else {
-        store.dispatch(FetchProductSuccess(existingProducts.productModel));
-      }
+      // } else {
+      //   store.dispatch(FetchProductSuccess(existingProducts.productModel));
+      // }
+    } catch (error) {
+      store.dispatch(FetchProductFailure(error.toString()));
+    }
+  };
+}
+
+ThunkAction<AppState> syncProductsThunk() {
+  return (Store<AppState> store) async {
+    store.dispatch(FetchProductRequest());
+
+    try {
+      final products = await productService.getAllProducts();
+      store.dispatch(FetchProductSuccess(products.productModel));
     } catch (error) {
       store.dispatch(FetchProductFailure(error.toString()));
     }

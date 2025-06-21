@@ -33,19 +33,31 @@ class CartScreen extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.delete_outline),
                 onPressed: () {
-                  StoreProvider.of<AppState>(context).dispatch(clearCartThunk());
+                  StoreProvider.of<AppState>(
+                    context,
+                  ).dispatch(clearCartThunk());
                 },
-              )
+              ),
             ],
           ),
 
           body: cartItems.isEmpty
-              ? const Center(child: Text("Your cart is empty! 😱", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: CustomColors.backgroundColor,)))
+              ? const Center(
+                  child: Text(
+                    "Your cart is empty! 😱",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: CustomColors.backgroundColor,
+                    ),
+                  ),
+                )
               : ListView.builder(
                   itemCount: cartItems.length,
                   itemBuilder: (context, index) {
                     final item = cartItems[index];
-                    return CartItemTile(item: item);
+                    final product = item.productInCart;
+                    return CartItemTile(item: item, product: product);
                   },
                 ),
 
@@ -57,11 +69,19 @@ class CartScreen extends StatelessWidget {
               children: [
                 const Text(
                   "Total:",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: CustomColors.bodyColor,),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: CustomColors.bodyColor,
+                  ),
                 ),
                 Text(
                   "SAR ${total.toStringAsFixed(2)}",
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: CustomColors.bodyColor,),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: CustomColors.bodyColor,
+                  ),
                 ),
               ],
             ),
