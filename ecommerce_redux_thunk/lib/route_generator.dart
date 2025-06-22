@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:ecommerce_redux_thunk/screens/splash_screen.dart';
-import 'package:ecommerce_redux_thunk/screens/login_screen.dart';
-import 'package:ecommerce_redux_thunk/screens/register_screen.dart';
-import 'package:ecommerce_redux_thunk/screens/home_screen.dart';
-import 'package:ecommerce_redux_thunk/screens/product_screen.dart';
-import 'package:ecommerce_redux_thunk/models/product_model.dart';
-import 'package:ecommerce_redux_thunk/screens/cart_screen.dart';
+import '../screens/splash_screen.dart';
+import '../screens/login_screen.dart';
+import '../screens/register_screen.dart';
+import '../screens/home_screen.dart';
+import '../screens/product_screen.dart';
+import '../models/product_model.dart';
+import '../screens/cart_screen.dart';
+import '../screens/payment_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -23,6 +24,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) =>  ProductScreen(product: args));
       case CartScreen.id:
         return MaterialPageRoute(builder: (_) => const CartScreen());
+      case PaymentScreen.id:
+        return MaterialPageRoute(builder: (context) => const PaymentScreen());
       
       default:
         return MaterialPageRoute(

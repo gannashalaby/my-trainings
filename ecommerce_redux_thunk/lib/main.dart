@@ -11,6 +11,8 @@ import '../redux/states/app_state.dart';
 import '../redux/reducers/root_reducer.dart';
 import '../redux/middlewares/user_thunk.dart';
 import '../redux/middlewares/product_thunk.dart';
+import '../redux/middlewares/cart_thunk.dart';
+import '../redux/middlewares/payment_thunk.dart';
 
 void main() async{
   final store = Store<AppState>(
@@ -20,6 +22,8 @@ void main() async{
       thunkMiddleware,
       ...createUserMiddleware(),
       ...createProductMiddleware(),
+      // ...createCartMiddleware(),
+      // ...createPaymentMiddleware(),
     ],
   );
   

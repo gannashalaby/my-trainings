@@ -3,7 +3,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import '../models/cart_model.dart';
 import '../redux/states/app_state.dart';
 import '../redux/middlewares/cart_thunk.dart';
-import '../widgets/cart_quantity_control.dart';
 import '../constans/colors.dart';
 import '../models/product_model.dart';
 
@@ -40,45 +39,45 @@ class CartItemTile extends StatelessWidget {
     }
 
     return StoreConnector<AppState, VoidCallback>(
-      // onInit: (store) => {
-      //   // print('CartItemTile: onInit called for item ${item.productInCart.id}'),
-      // },
       converter: (store) =>
           () => store.dispatch(removeFromCartThunk(item.productInCart.id)),
       builder: (context, removeItem) {
 
-        // print('Quantity: ${item.productInCart.quantity}');
-        // print('SoldOut: $isSoldOut, VeryLow: $isVeryLowStock, Low: $isLowStock');
-
-        // print('Q: ${item.productInCart.quantity} | SoldOut: $isSoldOut | VeryLow: $isVeryLowStock | Low: $isLowStock');
-
-        return ListTile(
-          leading: Image.asset(
-            item.productInCart.imagePath,
-            width: 50,
-            height: 50,
-          ),
-          title: Text(
-            item.productInCart.name,
-            style: TextStyle(
-              color: CustomColors.backgroundColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          subtitle: Column(
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'SAR ${item.productInCart.price.toStringAsFixed(2)}',
-                style: TextStyle(
-                  color: CustomColors.backgroundColor,
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.productInCart.name,
+                      style: TextStyle(
+                        color: CustomColors.backgroundColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'SAR ${item.productInCart.price.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        color: CustomColors.backgroundColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    if (stockText() != null) ...[
+                      const SizedBox(height: 4),
+                      stockText()!,
+                    ],
+                  ],
                 ),
               ),
-              if (stockText() != null) stockText()!,
             ],
           ),
-          trailing: CartQuantityControls(item: item),
         );
       },
     );

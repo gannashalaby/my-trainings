@@ -97,4 +97,24 @@ ThunkAction<AppState> clearCartThunk() {
   };
 }
 
+ThunkAction<AppState> updateCartQuantityThunk(int productId, int newQuantity) {
+  return (Store<AppState> store) async {
+    final currentItems = [...store.state.cartState.items];
+    final index = currentItems.indexWhere((item) => item.productInCart.id == productId);
+
+    if (index != -1) {
+      final existingItem = currentItems[index];
+      currentItems[index] = CartItem(
+        productInCart: existingItem.productInCart,
+        quantityInCart: newQuantity,
+      );
+
+      store.dispatch(LoadCartAction(currentItems)); // Reuse your existing load/update action
+
+      final username = store.state.userState.currentUser?.name;
+      await CartService().saveCart(username, currentItems);
+    }
+  };
+}
+
 List<Middleware<AppState>> createCartMiddleware() => [];
