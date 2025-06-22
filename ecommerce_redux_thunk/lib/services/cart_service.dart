@@ -8,17 +8,31 @@ import '../services/product_service.dart';
 class CartService {
   Future<String> _getFilePath(String? username) async {
     final dir = await getApplicationDocumentsDirectory();
-    return username != null ? '${dir.path}/cart_$username.json' : '${dir.path}/guest_cart.json';
+    return username != null
+        ? '${dir.path}/cart_$username.json'
+        : '${dir.path}/guest_cart.json';
   }
 
-  Future<List<CartItem>> loadCart(String? username) async {
+    Future<List<CartItem>> loadCart(String? username) async {
     final path = await _getFilePath(username);
     final file = File(path);
     if (!await file.exists()) return [];
 
     final content = await file.readAsString();
-    final data = json.decode(content) as List;
-    List<CartItem> loadedCart =  data.map((item) => CartItem.fromJson(item)).toList();
+    if (content.trim().isEmpty) return []; // Handle empty file
+
+    List<dynamic> data;
+    try {
+      data = json.decode(content) as List<dynamic>;
+    } catch (e) {
+      // Handle malformed JSON
+      return [];
+    }
+
+    List<CartItem> loadedCart = data
+        .whereType<Map<String, dynamic>>() // Ensure correct type
+        .map((item) => CartItem.fromJson(item))
+        .toList();
 
     final productService = ProductService();
     final productList = await productService.getAllProducts();
@@ -40,18 +54,21 @@ class CartService {
       return CartItem(
         productInCart: matchingProduct,
         quantityInCart: cartItem.quantityInCart,
+        isSelected: cartItem.isSelected,
       );
     }).toList();
 
     return updatedCart;
   } //every time loads cart, it compares the items in the cart with the products in the product list.
-    // if the product is not in the product list, it displays soldout it from the cart.
-    // if the product details are updated in the product list, it updates the cart item with the new details.
+  // if the product is not in the product list, it displays soldout it from the cart.
+  // if the product details are updated in the product list, it updates the cart item with the new details.
 
   Future<void> saveCart(String? username, List<CartItem> items) async {
     final path = await _getFilePath(username);
     final file = File(path);
-    final data = json.encode(items.map((e) => e.toJson()).toList());
+    final data = json.encode(
+      items.map((e) => e.toJson()).toList(),
+    ); // isSelected should be included in toJson
     await file.writeAsString(data);
   }
 

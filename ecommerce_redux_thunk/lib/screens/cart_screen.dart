@@ -16,35 +16,35 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  final Set<int> _selectedProductIds = {};
+  // final Set<int> _selectedProductIds = {};
 
-  void _toggleSelection(int productId) {
-    setState(() {
-      if (_selectedProductIds.contains(productId)) {
-        _selectedProductIds.remove(productId);
-      } else {
-        _selectedProductIds.add(productId);
-      }
-    });
-  }
+  // void _toggleSelection(int productId) {
+  //   setState(() {
+  //     if (_selectedProductIds.contains(productId)) {
+  //       _selectedProductIds.remove(productId);
+  //     } else {
+  //       _selectedProductIds.add(productId);
+  //     }
+  //   });
+  // }
 
-  bool _areAllSelected(List<int> productIds) {
-    return productIds.every((id) => _selectedProductIds.contains(id));
-  }
+  // bool _areAllSelected(List<int> productIds) {
+  //   return productIds.every((id) => _selectedProductIds.contains(id));
+  // }
 
-  void _toggleSelectAll(List<int> productIds) {
-    setState(() {
-      if (_areAllSelected(productIds)) {
-        _selectedProductIds.clear();
-      } else {
-        _selectedProductIds.addAll(productIds);
-      }
-    });
-  }
+  // void _toggleSelectAll(List<int> productIds) {
+  //   setState(() {
+  //     if (_areAllSelected(productIds)) {
+  //       _selectedProductIds.clear();
+  //     } else {
+  //       _selectedProductIds.addAll(productIds);
+  //     }
+  //   });
+  // }
 
   void _proceedToPayment(AppState state) {
     final selectedItems = state.cartState.items
-        .where((item) => _selectedProductIds.contains(item.productInCart.id))
+        .where((item) => item.isSelected)
         .toList();
 
     if (selectedItems.isEmpty) {
@@ -69,17 +69,14 @@ class _CartScreenState extends State<CartScreen> {
       builder: (context, state) {
         final cartItems = state.cartState.items;
 
-        final selectedItems = cartItems
-            .where((item) => _selectedProductIds.contains(item.productInCart.id))
-            .toList();
+        final selectedItems = cartItems.where((item) => item.isSelected).toList();
 
         final total = selectedItems.fold<double>(
           0.0,
           (sum, item) => sum + item.productInCart.price * item.quantityInCart,
         );
 
-        final productIds = cartItems.map((item) => item.productInCart.id).toList();
-        final allSelected = _areAllSelected(productIds);
+        final allSelected = cartItems.isNotEmpty && cartItems.every((item) => item.isSelected);
 
         return Scaffold(
           appBar: AppBar(
@@ -115,7 +112,15 @@ class _CartScreenState extends State<CartScreen> {
                         children: [
                           Checkbox(
                             value: allSelected,
-                            onChanged: (_) => _toggleSelectAll(productIds),
+                            onChanged: (_) {
+                              final store = StoreProvider.of<AppState>(context);
+                              final selectAll = !allSelected;
+                              for (final item in cartItems) {
+                                if (item.isSelected != selectAll) {
+                                  store.dispatch(toggleCartItemSelectionThunk(item.productInCart.id));
+                                }
+                              }
+                            },
                             side: BorderSide(color: CustomColors.backgroundColor, width: 2),
                             activeColor: CustomColors.backgroundColor,
                             checkColor: CustomColors.bodyColor,
@@ -138,7 +143,6 @@ class _CartScreenState extends State<CartScreen> {
                         itemBuilder: (context, index) {
                           final item = cartItems[index];
                           final product = item.productInCart;
-                          final isSelected = _selectedProductIds.contains(product.id);
 
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
@@ -146,12 +150,12 @@ class _CartScreenState extends State<CartScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Checkbox(
-                                  value: isSelected,
-                                  onChanged: (_) => _toggleSelection(product.id),
-                                  side: BorderSide(
-                                    color: CustomColors.backgroundColor,
-                                    width: 2,
-                                  ),
+                                  value: item.isSelected,
+                                  onChanged: (_) {
+                                    StoreProvider.of<AppState>(context)
+                                        .dispatch(toggleCartItemSelectionThunk(product.id));
+                                  },
+                                  side: BorderSide(color: CustomColors.backgroundColor, width: 2),
                                   activeColor: CustomColors.backgroundColor,
                                   checkColor: CustomColors.bodyColor,
                                 ),

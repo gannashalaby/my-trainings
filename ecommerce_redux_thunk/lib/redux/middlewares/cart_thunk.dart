@@ -117,4 +117,23 @@ ThunkAction<AppState> updateCartQuantityThunk(int productId, int newQuantity) {
   };
 }
 
+ThunkAction<AppState> toggleCartItemSelectionThunk(int productId) {
+  return (Store<AppState> store) async {
+    final username = store.state.userState.currentUser?.name;
+    final updatedItems = store.state.cartState.items.map((item) {
+      if (item.productInCart.id == productId) {
+        return CartItem(
+          productInCart: item.productInCart,
+          quantityInCart: item.quantityInCart,
+          isSelected: !item.isSelected,
+        );
+      }
+      return item;
+    }).toList();
+
+    store.dispatch(LoadCartAction(updatedItems));
+    await CartService().saveCart(username, updatedItems);
+  };
+}
+
 List<Middleware<AppState>> createCartMiddleware() => [];

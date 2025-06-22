@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:redux/redux.dart';
 import '../states/app_state.dart';
