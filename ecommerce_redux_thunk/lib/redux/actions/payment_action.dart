@@ -1,11 +1,19 @@
-class SelectPaymentMethod {
+import '../../models/payment_model.dart';
+
+class MakePaymentRequest {
   final String method;
-  SelectPaymentMethod(this.method);
+
+  MakePaymentRequest(this.method);
 }
 
-class PaymentSuccess {}
+class MakePaymentSuccess {
+  final Payment payment;
+  final String method;
 
-class PaymentFailure {
+  MakePaymentSuccess(this.payment, this.method);
+}
+
+class MakePaymentFailure {
   final String error;
-  PaymentFailure(this.error);
+  MakePaymentFailure(this.error);
 }

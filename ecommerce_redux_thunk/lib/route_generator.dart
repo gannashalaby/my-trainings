@@ -7,6 +7,7 @@ import '../screens/product_screen.dart';
 import '../models/product_model.dart';
 import '../screens/cart_screen.dart';
 import '../screens/payment_screen.dart';
+import '../models/cart_model.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -25,8 +26,17 @@ class RouteGenerator {
       case CartScreen.id:
         return MaterialPageRoute(builder: (_) => const CartScreen());
       case PaymentScreen.id:
-        return MaterialPageRoute(builder: (context) => const PaymentScreen());
-      
+        final args = settings.arguments as Map<String, dynamic>;
+        final List<dynamic> rawItems = args['items'];
+        final List<CartItem> items = rawItems.map((e) => CartItem.fromJson(Map<String, dynamic>.from(e))).toList();
+        final String username = args['username'];
+        return MaterialPageRoute(
+          builder: (_) => PaymentScreen(
+            selectedItems: items,
+            username: username,
+          ),
+        );
+
       default:
         return MaterialPageRoute(
           builder: (context) => const SplashScreen(),

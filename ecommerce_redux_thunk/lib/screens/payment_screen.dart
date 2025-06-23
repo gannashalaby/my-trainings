@@ -1,191 +1,97 @@
+import 'package:ecommerce_redux_thunk/constans/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import '../redux/states/app_state.dart';
+import '../redux/middlewares/payment_thunk.dart';
 import '../models/cart_model.dart';
-import '../constans/colors.dart';
+import '../models/payment_model.dart';
+// import '../widgets/logout_button.dart'; // optional
+// import 'package:uuid/uuid.dart'; // for unique usernames if needed
 
 class PaymentScreen extends StatefulWidget {
   static const String id = '/payment';
+  final List<CartItem> selectedItems;
+  final String username;
 
-  const PaymentScreen({super.key});
+  const PaymentScreen({
+    super.key,
+    required this.selectedItems,
+    required this.username,
+  });
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  List<CartItem> selectedItems = [];
   String selectedMethod = 'Cash';
-  bool stockAdjusted = false;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    final args = ModalRoute.of(context)!.settings.arguments;
-    if (args is List<CartItem>) {
-      selectedItems = List<CartItem>.from(args);
-
-      // Adjust cart if stock is less than requested quantity
-      for (int i = 0; i < selectedItems.length; i++) {
-        final item = selectedItems[i];
-        if (item.quantityInCart > item.productInCart.quantity) {
-          selectedItems[i] = CartItem(
-            productInCart: item.productInCart,
-            quantityInCart: item.productInCart.quantity,
-          );
-          stockAdjusted = true;
-        }
-      }
-    }
-  }
+  double get totalAmount => widget.selectedItems.fold(
+    0,
+    (sum, item) => sum + item.productInCart.price * item.quantityInCart,
+  );
 
   @override
   Widget build(BuildContext context) {
-    final total = selectedItems.fold<double>(
-      0.0,
-      (sum, item) => sum + item.productInCart.price * item.quantityInCart,
-    );
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Payment'),
-      ),
+      appBar: AppBar(title: const Text('Payment')),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (stockAdjusted)
-              Container(
-                padding: const EdgeInsets.all(10),
-                margin: const EdgeInsets.only(bottom: 10),
-                decoration: BoxDecoration(
-                  color: Colors.orange[100],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Text(
-                  '⚠ Some items were adjusted due to limited stock.',
-                  style: TextStyle(
-                    color: Colors.orange,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            const Text(
-              'Items Selected:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
+            const Text('Selected Products:'),
+            const SizedBox(height: 8),
             Expanded(
-              child: ListView.separated(
-                itemCount: selectedItems.length,
-                separatorBuilder: (_, __) => const Divider(),
+              child: ListView.builder(
+                itemCount: widget.selectedItems.length,
                 itemBuilder: (context, index) {
-                  final item = selectedItems[index];
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.asset(
-                        item.productInCart.imagePath,
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit.cover,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              item.productInCart.name,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              'SAR ${item.productInCart.price.toStringAsFixed(2)} × ${item.quantityInCart}',
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Select Payment Method:',
-              style: TextStyle(fontSize: 18),
-            ),
-            Row(
-              children: ['Cash', 'PayPal'].map((method) {
-                return Expanded(
-                  child: RadioListTile<String>(
-                    title: Text(method),
-                    value: method,
-                    groupValue: selectedMethod,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedMethod = value!;
-                      });
-                    },
-                  ),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Total:',
-                  style: TextStyle(fontSize: 18),
-                ),
-                Text(
-                  'SAR ${total.toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (_) => AlertDialog(
-                      title: const Text('Payment Successful'),
-                      content: Text(
-                        'You paid SAR ${total.toStringAsFixed(2)} via $selectedMethod.',
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.popUntil(context, (route) => route.isFirst);
-                          },
-                          child: const Text('OK'),
-                        ),
-                      ],
+                  final item = widget.selectedItems[index];
+                  return ListTile(
+                    title: Text(item.productInCart.name),
+                    subtitle: Text(
+                      'Qty: ${item.quantityInCart} • \$${(item.productInCart.price * item.quantityInCart).toStringAsFixed(2)}',
                     ),
                   );
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: CustomColors.bodyColor,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                ),
-                child: const Text(
-                  'Confirm Payment',
-                  style: TextStyle(
-                    color: CustomColors.backgroundColor,
-                    fontSize: 16,
-                  ),
-                ),
               ),
             ),
+            Text('Total: \$${totalAmount.toStringAsFixed(2)}'),
+            const SizedBox(height: 16),
+            DropdownButtonFormField<String>(
+              value: selectedMethod,
+              items: ['Cash', 'Paypal'].map((String method) {
+                return DropdownMenuItem(value: method, child: Text(method));
+              }).toList(),
+              onChanged: (value) {
+                setState(() => selectedMethod = value!);
+              },
+              decoration: const InputDecoration(labelText: 'Select Payment Method'),
+            ),
+            const SizedBox(height: 16),
+            StoreConnector<AppState, void Function()>(
+              converter: (store) {
+                return () {
+                  for (final item in widget.selectedItems) {
+                    final payment = Payment(
+                      items: item,
+                      method: selectedMethod,
+                      amount: item.productInCart.price * item.quantityInCart,
+                      timestamp: DateTime.now(),
+                    );
+                    store.dispatch(makePaymentThunk(widget.username, payment));
+                  }
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Payments processed!')),
+                  );
+                  Navigator.pop(context);
+                };
+              },
+              builder: (_, makePayment) => ElevatedButton(
+                onPressed: makePayment,
+                child: const Text('Pay Now', style: TextStyle(color: CustomColors.backgroundColor),),
+              ),
+            )
           ],
         ),
       ),

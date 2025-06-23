@@ -5,6 +5,7 @@ import '../redux/middlewares/cart_thunk.dart';
 import '../widgets/cart_item_tile.dart';
 import '../constans/colors.dart';
 import '../widgets/cart_quantity_control.dart';
+import 'payment_screen.dart';
 
 class CartScreen extends StatefulWidget {
   static const String id = '/cart';
@@ -16,32 +17,6 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  // final Set<int> _selectedProductIds = {};
-
-  // void _toggleSelection(int productId) {
-  //   setState(() {
-  //     if (_selectedProductIds.contains(productId)) {
-  //       _selectedProductIds.remove(productId);
-  //     } else {
-  //       _selectedProductIds.add(productId);
-  //     }
-  //   });
-  // }
-
-  // bool _areAllSelected(List<int> productIds) {
-  //   return productIds.every((id) => _selectedProductIds.contains(id));
-  // }
-
-  // void _toggleSelectAll(List<int> productIds) {
-  //   setState(() {
-  //     if (_areAllSelected(productIds)) {
-  //       _selectedProductIds.clear();
-  //     } else {
-  //       _selectedProductIds.addAll(productIds);
-  //     }
-  //   });
-  // }
-
   void _proceedToPayment(AppState state) {
     final selectedItems = state.cartState.items
         .where((item) => item.isSelected)
@@ -55,7 +30,39 @@ class _CartScreenState extends State<CartScreen> {
       );
       return;
     }
-    Navigator.pushNamed(context, '/payment', arguments: selectedItems);
+
+    // bool adjusted = false;
+
+    // for (var item in selectedItems) {
+    //   final available = item.productInCart.quantity;
+    //   if (available == 0) {
+    //     continue;
+    //   }
+
+    //   if (item.quantityInCart > available) {
+    //     store.dispatch(updateCartQuantityThunk(item.productInCart.id, available));
+    //     adjusted = true;
+    //   }
+    // }
+
+    // if (adjusted) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(
+    //       content: Text("Some quantities were adjusted due to limited stock."),
+    //     ),
+    //   );
+    // }
+
+    print('Selected Items to pass: ${selectedItems.length}');
+
+    Navigator.pushNamed(
+      context,
+      '/payment',
+      arguments: {
+        'items': selectedItems.map((e) => e.toJson()).toList(),
+        'username': state.userState.currentUser?.name ?? 'guest',
+      },
+    );
   }
 
   @override
@@ -69,14 +76,17 @@ class _CartScreenState extends State<CartScreen> {
       builder: (context, state) {
         final cartItems = state.cartState.items;
 
-        final selectedItems = cartItems.where((item) => item.isSelected).toList();
+        final selectedItems = cartItems
+            .where((item) => item.isSelected)
+            .toList();
 
         final total = selectedItems.fold<double>(
           0.0,
           (sum, item) => sum + item.productInCart.price * item.quantityInCart,
         );
 
-        final allSelected = cartItems.isNotEmpty && cartItems.every((item) => item.isSelected);
+        final allSelected =
+            cartItems.isNotEmpty && cartItems.every((item) => item.isSelected);
 
         return Scaffold(
           appBar: AppBar(
@@ -107,7 +117,10 @@ class _CartScreenState extends State<CartScreen> {
               : Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 6,
+                      ),
                       child: Row(
                         children: [
                           Checkbox(
@@ -117,11 +130,18 @@ class _CartScreenState extends State<CartScreen> {
                               final selectAll = !allSelected;
                               for (final item in cartItems) {
                                 if (item.isSelected != selectAll) {
-                                  store.dispatch(toggleCartItemSelectionThunk(item.productInCart.id));
+                                  store.dispatch(
+                                    toggleCartItemSelectionThunk(
+                                      item.productInCart.id,
+                                    ),
+                                  );
                                 }
                               }
                             },
-                            side: BorderSide(color: CustomColors.backgroundColor, width: 2),
+                            side: BorderSide(
+                              color: CustomColors.backgroundColor,
+                              width: 2,
+                            ),
                             activeColor: CustomColors.backgroundColor,
                             checkColor: CustomColors.bodyColor,
                           ),
@@ -136,7 +156,10 @@ class _CartScreenState extends State<CartScreen> {
                         ],
                       ),
                     ),
-                    const Divider(height: 1, color: CustomColors.backgroundColor),
+                    const Divider(
+                      height: 1,
+                      color: CustomColors.backgroundColor,
+                    ),
                     Expanded(
                       child: ListView.builder(
                         itemCount: cartItems.length,
@@ -145,17 +168,26 @@ class _CartScreenState extends State<CartScreen> {
                           final product = item.productInCart;
 
                           return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 4,
+                              horizontal: 8,
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Checkbox(
                                   value: item.isSelected,
                                   onChanged: (_) {
-                                    StoreProvider.of<AppState>(context)
-                                        .dispatch(toggleCartItemSelectionThunk(product.id));
+                                    StoreProvider.of<AppState>(
+                                      context,
+                                    ).dispatch(
+                                      toggleCartItemSelectionThunk(product.id),
+                                    );
                                   },
-                                  side: BorderSide(color: CustomColors.backgroundColor, width: 2),
+                                  side: BorderSide(
+                                    color: CustomColors.backgroundColor,
+                                    width: 2,
+                                  ),
                                   activeColor: CustomColors.backgroundColor,
                                   checkColor: CustomColors.bodyColor,
                                 ),
@@ -165,7 +197,12 @@ class _CartScreenState extends State<CartScreen> {
                                   height: 70,
                                 ),
                                 const SizedBox(width: 12),
-                                Expanded(child: CartItemTile(item: item, product: product)),
+                                Expanded(
+                                  child: CartItemTile(
+                                    item: item,
+                                    product: product,
+                                  ),
+                                ),
                                 CartQuantityControls(item: item),
                               ],
                             ),

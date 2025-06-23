@@ -18,6 +18,6 @@ class AppState {
         productState: ProductState.initial(),
         recommendedProductState: RecommendedProductState.initial(),
         cartState: CartState(),
-        paymentState: PaymentState.initial(),
+        paymentState: PaymentState(),
       );
 }

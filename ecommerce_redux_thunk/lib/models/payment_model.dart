@@ -1,27 +1,31 @@
 import 'cart_model.dart';
 
-class PaymentModel {
-  final String username;
+class Payment {
+  final CartItem items;
   final String method;
   final double amount;
-  final List<CartItem> items;
   final DateTime timestamp;
 
-  PaymentModel({
-    required this.username,
+  Payment({
+    required this.items,
     required this.method,
     required this.amount,
-    required this.items,
     required this.timestamp,
   });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'username': username,
+  Map<String, dynamic> toJson() => {
+      'items': items.toJson(),
       'method': method,
       'amount': amount,
       'timestamp': timestamp.toIso8601String(),
-      'items': items.map((item) => item.toJson()).toList(),
     };
+
+  static Payment fromJson(Map<String, dynamic> json) {
+    return Payment(
+      items: json['items'],
+      method: json['method'],
+      amount: json['amount'],
+      timestamp: DateTime.parse(json['timestamp']),
+    );
   }
 }
