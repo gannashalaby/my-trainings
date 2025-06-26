@@ -7,13 +7,13 @@ import '../states/app_state.dart';
 
 ThunkAction<AppState> makePaymentThunk(String username, Payment payment) {
   return (Store<AppState> store) async {
-    store.dispatch(MakePaymentRequest(payment.method)); // Pass method explicitly
+    store.dispatch(MakePaymentRequest(payment.method));
 
     try {
       final service = PaymentService();
       await service.savePayment(username, payment);
 
-      store.dispatch(MakePaymentSuccess(payment, payment.method)); // Pass method explicitly
+      store.dispatch(MakePaymentSuccess(payment, payment.method));
     } catch (e) {
       store.dispatch(MakePaymentFailure(e.toString()));
     }

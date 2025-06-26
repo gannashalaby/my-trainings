@@ -1,12 +1,10 @@
-import 'package:ecommerce_redux_thunk/constans/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import '../redux/states/app_state.dart';
-import '../redux/middlewares/payment_thunk.dart';
 import '../models/cart_model.dart';
 import '../models/payment_model.dart';
-// import '../widgets/logout_button.dart'; // optional
-// import 'package:uuid/uuid.dart'; // for unique usernames if needed
+import '../redux/states/app_state.dart';
+import '../redux/middlewares/payment_thunk.dart';
+import '../constans/colors.dart';
 
 class PaymentScreen extends StatefulWidget {
   static const String id = '/payment';
@@ -27,9 +25,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
   String selectedMethod = 'Cash';
 
   double get totalAmount => widget.selectedItems.fold(
-    0,
-    (sum, item) => sum + item.productInCart.price * item.quantityInCart,
-  );
+        0,
+        (sum, item) => sum + item.productInCart.price * item.quantityInCart,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -60,36 +58,38 @@ class _PaymentScreenState extends State<PaymentScreen> {
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               value: selectedMethod,
-              items: ['Cash', 'Paypal'].map((String method) {
+              items: ['Cash', 'Paypal'].map((method) {
                 return DropdownMenuItem(value: method, child: Text(method));
               }).toList(),
-              onChanged: (value) {
-                setState(() => selectedMethod = value!);
-              },
+              onChanged: (value) => setState(() => selectedMethod = value!),
               decoration: const InputDecoration(labelText: 'Select Payment Method'),
             ),
             const SizedBox(height: 16),
             StoreConnector<AppState, void Function()>(
               converter: (store) {
                 return () {
-                  for (final item in widget.selectedItems) {
-                    final payment = Payment(
-                      items: item,
-                      method: selectedMethod,
-                      amount: item.productInCart.price * item.quantityInCart,
-                      timestamp: DateTime.now(),
-                    );
-                    store.dispatch(makePaymentThunk(widget.username, payment));
-                  }
+                  final payment = Payment(
+                    id: 0, // ID will be assigned in service
+                    items: widget.selectedItems,
+                    method: selectedMethod,
+                    amount: totalAmount,
+                    timestamp: DateTime.now(),
+                  );
+
+                  store.dispatch(makePaymentThunk(widget.username, payment));
+
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Payments processed!')),
+                    const SnackBar(content: Text('Payment completed successfully!')),
                   );
                   Navigator.pop(context);
                 };
               },
               builder: (_, makePayment) => ElevatedButton(
                 onPressed: makePayment,
-                child: const Text('Pay Now', style: TextStyle(color: CustomColors.backgroundColor),),
+                child: const Text(
+                  'Pay Now',
+                  style: TextStyle(color: CustomColors.backgroundColor),
+                ),
               ),
             )
           ],

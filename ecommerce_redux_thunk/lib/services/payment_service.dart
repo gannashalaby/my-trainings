@@ -16,12 +16,25 @@ class PaymentService {
 
     if (await file.exists()) {
       final content = await file.readAsString();
-      final List<dynamic> decoded = json.decode(content);
-      payments = decoded.map((e) => Payment.fromJson(e)).toList();
+      final decoded = jsonDecode(content);
+      payments = (decoded as List).map((e) => Payment.fromJson(e)).toList();
     }
 
-    payments.add(payment);
-    await file.writeAsString(json.encode(payments.map((e) => e.toJson()).toList()));
+    final nextId = payments.isEmpty 
+        ? 1 
+        : payments.map((p) => p.id).reduce((a, b) => a > b ? a : b) + 1;
+
+    final newPayment = Payment(
+      id: nextId,
+      items: payment.items,
+      method: payment.method,
+      amount: payment.amount,
+      timestamp: payment.timestamp,
+    );
+
+    payments.add(newPayment);
+
+    await file.writeAsString(jsonEncode(payments.map((e) => e.toJson()).toList()));
   }
 
   Future<List<Payment>> loadPayments(String username) async {
