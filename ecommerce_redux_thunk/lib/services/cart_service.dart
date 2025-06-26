@@ -68,9 +68,32 @@ class CartService {
     final file = File(path);
     final data = json.encode(
       items.map((e) => e.toJson()).toList(),
-    ); // isSelected should be included in toJson
+    );
     await file.writeAsString(data);
   }
+
+  Future<void> removePurchasedItems(String username, List<CartItem> purchasedItems) async {
+    final path = await _getFilePath(username);
+    final file = File(path);
+
+    if (!await file.exists()) return;
+
+    final content = await file.readAsString();
+    final List<dynamic> cartJson = jsonDecode(content);
+
+    final List<CartItem> currentCart = cartJson
+        .map((item) => CartItem.fromJson(Map<String, dynamic>.from(item)))
+        .toList();
+
+    final remainingItems = currentCart.where((cartItem) {
+      return !purchasedItems.any((purchased) =>
+        purchased.productInCart.id == cartItem.productInCart.id);
+    }).toList();
+
+    final updatedJson = remainingItems.map((item) => item.toJson()).toList();
+    await file.writeAsString(jsonEncode(updatedJson));
+  }
+
 
   Future<void> clearCart(String? username) async {
     final path = await _getFilePath(username);

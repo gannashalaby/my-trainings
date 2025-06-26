@@ -8,6 +8,7 @@ import '../models/product_model.dart';
 import '../screens/cart_screen.dart';
 import '../screens/payment_screen.dart';
 import '../models/cart_model.dart';
+import '../screens/paypal_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -36,6 +37,8 @@ class RouteGenerator {
             username: username,
           ),
         );
+      case PaypalPaymentScreen.id:
+        return MaterialPageRoute(builder: (context) => const PaypalPaymentScreen());
 
       default:
         return MaterialPageRoute(

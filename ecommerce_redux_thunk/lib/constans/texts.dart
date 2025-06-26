@@ -14,15 +14,15 @@ class CustomTextStyles {
   );
 
   static const TextStyle subheading = TextStyle(
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: FontWeight.w600,
-    color: CustomColors.textColor,
+    color: CustomColors.backgroundColor,
   );
 
   static const TextStyle body = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.normal,
-    color: CustomColors.textColor,
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    color: CustomColors.backgroundColor,
   );
 
   static const TextStyle caption = TextStyle(

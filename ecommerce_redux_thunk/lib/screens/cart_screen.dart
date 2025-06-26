@@ -4,8 +4,8 @@ import '../redux/states/app_state.dart';
 import '../redux/middlewares/cart_thunk.dart';
 import '../widgets/cart_item_tile.dart';
 import '../constans/colors.dart';
+import '../constans/texts.dart';
 import '../widgets/cart_quantity_control.dart';
-import 'payment_screen.dart';
 
 class CartScreen extends StatefulWidget {
   static const String id = '/cart';
@@ -246,18 +246,18 @@ class _CartScreenState extends State<CartScreen> {
                     final user = store.state.userState.currentUser;
 
                     if (user == null) {
-                      // Not logged in
                       showDialog(
                         context: context,
                         builder: (_) => AlertDialog(
-                          title: const Text('Login Required'),
+                          title: const Text('Login Required', style: TextStyle(color: CustomColors.backgroundColor)),
                           content: const Text(
                             'Please log in to proceed with payment.',
+                            style: TextStyle(color: CustomColors.backgroundColor)
                           ),
                           actions: [
                             TextButton(
                               onPressed: () {
-                                Navigator.pop(context); // Close dialog
+                                Navigator.pop(context);
                               },
                               child: const Text('Cancel'),
                             ),
@@ -269,7 +269,7 @@ class _CartScreenState extends State<CartScreen> {
                                   '/login',
                                 ); // Navigate to login
                               },
-                              child: const Text('Login'),
+                              child: const Text('Login', style: CustomTextStyles.buttonText),
                             ),
                           ],
                         ),
