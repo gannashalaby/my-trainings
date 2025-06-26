@@ -5,6 +5,7 @@ import '../../services/payment_service.dart';
 import '../actions/payment_action.dart';
 import '../states/app_state.dart';
 import '../../services/cart_service.dart';
+import '../../services/product_service.dart';
 
 ThunkAction<AppState> makePaymentThunk(String username, Payment payment) {
   return (Store<AppState> store) async {
@@ -16,6 +17,11 @@ ThunkAction<AppState> makePaymentThunk(String username, Payment payment) {
 
       final cartService = CartService();
       await cartService.removePurchasedItems(username, payment.items);
+
+      final productService = ProductService();
+      final currentProducts = productService.getMockProducts();
+
+      await productService.reduceProductStockFromList(payment.items, currentProducts);
 
       store.dispatch(MakePaymentSuccess(payment, payment.method));
     } catch (e) {

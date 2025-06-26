@@ -1,21 +1,3 @@
-class ProductList {
-  List<Product> productModel;
-
-  ProductList({required this.productModel});
-
-  factory ProductList.fromJson(Map<String, dynamic> json) {
-    var productModelFromJson = json['product'] as List;
-    List<Product> products = productModelFromJson
-        .map((productJson) => Product.fromJson(productJson))
-        .toList();
-    return ProductList(productModel: products);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {'product': productModel.map((product) => product.toJson()).toList()};
-  }
-}
-
 class Product {
   final int id;
   final String name;
@@ -32,5 +14,34 @@ class Product {
 
   Map<String, dynamic> toJson() {
     return {'id': id, 'name': name, 'price': price, 'quantity': quantity, 'description': description, 'imagePath': imagePath};
+  }
+
+  Product copyWith({int? id, String? name, double? price, int? quantity, String? description, String? imagePath}) {
+    return Product(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      price: price ?? this.price,
+      quantity: quantity ?? this.quantity,
+      description: description ?? this.description,
+      imagePath: imagePath ?? this.imagePath,
+    );
+  }
+}
+
+class ProductList {
+  List<Product> productModel;
+
+  ProductList({required this.productModel});
+
+  factory ProductList.fromJson(Map<String, dynamic> json) {
+    var productModelFromJson = json['product'] as List;
+    List<Product> products = productModelFromJson
+        .map((productJson) => Product.fromJson(productJson))
+        .toList();
+    return ProductList(productModel: products);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'product': productModel.map((product) => product.toJson()).toList()};
   }
 }

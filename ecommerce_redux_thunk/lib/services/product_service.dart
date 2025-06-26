@@ -4,6 +4,7 @@ import 'dart:io';
 import '../models/product_model.dart';
 import 'package:path_provider/path_provider.dart';
 import '../paths/image_paths.dart';
+import '../models/cart_model.dart';
 
 class ProductService {
   List<Product> getMockProducts() {
@@ -194,5 +195,23 @@ class ProductService {
   Future<void> clearProducts() async {
     final file = await _getFile();
     await file.writeAsString(jsonEncode({'product': []}));
+  }
+
+  Future<void> reduceProductStockFromList(List<CartItem> purchasedItems, List<Product> currentProductList) async {
+    for (final cartItem in purchasedItems) {
+      final productIndex = currentProductList.indexWhere(
+        (p) => p.id == cartItem.productInCart.id,
+      );
+
+      if (productIndex != -1) {
+        final product = currentProductList[productIndex];
+        final updatedQty = (product.quantity - cartItem.quantityInCart).clamp(0, double.infinity).toInt();
+        currentProductList[productIndex] = product.copyWith(quantity: updatedQty);
+      }
+    }
+
+    final file = await _getFile();
+    final json = jsonEncode(ProductList(productModel: currentProductList).toJson());
+    await file.writeAsString(json);
   }
 }
