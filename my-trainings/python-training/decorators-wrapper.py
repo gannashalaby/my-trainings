@@ -6,7 +6,6 @@ def train_passenger_decorator(func):
         return result
     return wrapper
 
-@train_passenger_decorator
 def add_passenger_to_train(train, name):
     if len(train['passengers']) < train['capacity']:
         train['passengers'].append(name)
@@ -16,4 +15,16 @@ def add_passenger_to_train(train, name):
         print("Train is full")
         return False
     
-add_passenger_to_train({'capacity': 3, 'passengers': []}, 'Alice')
+@train_passenger_decorator
+def main():
+    train = {'capacity': 2, 'passengers': []}
+    while True:
+        name = input("Enter passenger name (or 'exit' to stop): ")
+        if name.lower() == 'exit':
+            break
+        if not add_passenger_to_train(train, name):
+            break
+    print("Final list of passengers:", train['passengers'])
+
+if __name__ == "__main__":
+    main()
